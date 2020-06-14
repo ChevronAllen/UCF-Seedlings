@@ -1,8 +1,6 @@
 #pragma once
 
 #include "m3diaLibCI/console.hpp"
-#include "m3diaLibCI/text.hpp"
-#include "m3diaLibCI/button.hpp" 
 
 #include <m3dia.hpp>
 
@@ -14,9 +12,6 @@ class Util
 	
 	//Default console in which all Util.Prints will print ot to
 	m3dCI::Console* console;
-	//Text which is displayed on Game Load.
-	//Likely to be removed.
-	m3dCI::Text* exitText;
 	
 	//The active Applet object
 	Applet* app;
@@ -34,6 +29,8 @@ class Util
 	Util(Screen* screen, Applet* applet);
 	
 	public:
+	//Destructor: Objects that must be deleted when this object is deleted. Delete(nullptr) is fail-safe.
+	virtual ~Util();
 	
 	//The function which is called on every game frame.
 	void OnUpdate();
@@ -42,6 +39,12 @@ class Util
 	static Util* getInstance();
 	
 	//Print statements to write to the primary console.
-	void PrintLine(std::string text);
-	void Print(std::string text);
+	static void PrintLine(std::string text);
+	static void Print(std::string text);
+	
+	static void drawTop(Drawable& obj, RenderContext::Mode mode, int layer);
+	static void drawBottom(Drawable& obj, RenderContext::Mode mode, int layer);
+	
+	//Function to check the current Console drawn state
+	static bool IsConsoleDrawn();
 };

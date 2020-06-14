@@ -1,6 +1,7 @@
 build/*
 .vscode/*
 .vs/*
+source/.vs/*
 *.3dsx
 *.elf
 *.smdh

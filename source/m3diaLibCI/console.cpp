@@ -12,6 +12,12 @@ namespace m3dCI
 		consoleTextBox.setFontWeight(0.5);
 	}
 
+	//Deconstructor: Delete objects which were created solely for this object.
+	Console::~Console()
+	{
+
+	}
+
 	//Toggle the state of the console (visible to invisible)
 	void Console::ToggleState()
 	{

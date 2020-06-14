@@ -54,17 +54,20 @@ Util::Util(Screen* screen, Applet* applet)
 	app = applet;
 	
 	console = new m3dCI::Console("Press A or B to write some text.");
-	exitText = new m3dCI::Text("Press Start and Select to Exit\nPress L and R to open/close Console.");
-	exitText->setFontSize(0.5);
-	exitText->setFontWeight(0.5);
+}
+
+//Destructor: Objects that must be deleted when this object is deleted. Delete(nullptr) is fail-safe.
+Util::~Util()
+{
+	delete(console);
 }
 
 //The function which is called on every game frame.
 void Util::OnUpdate()
 {	
 	//Check for force close button presses, Close if successful
-	if (buttonPressed(buttons::Button::Start)
-		&& buttonPressed(buttons::Button::Select))
+	if (buttonDown(buttons::Button::Start)
+		&& buttonDown(buttons::Button::Select))
 		this->app->exit();
 	
 	//Check for Console Opening button presses, Open console if successful
@@ -73,7 +76,7 @@ void Util::OnUpdate()
 		this->console->ToggleState();
 	
 	//Console specific actions, Only works when console is on screen
-	if(this->console->isDrawn())
+	if(IsConsoleDrawn())
 	{
 		//Write some text
 		if (buttonPressed(buttons::Button::A))
@@ -86,22 +89,43 @@ void Util::OnUpdate()
 		//Draw the console
 		scr->drawTop(*console, RenderContext::Mode::Flat);
 	}
-	//Everything besides the console
-	else
-	{
-		//Draw the exitText
-		scr->drawTop(*exitText, RenderContext::Mode::Flat);
-	}
+}
+
+void Util::drawTop(Drawable& obj, RenderContext::Mode mode = RenderContext::Mode::Flat, int layer = 0)
+{
+	getInstance();
+	if (instance != 0)
+		instance->scr->drawTop(obj, mode, layer);
+}
+
+void Util::drawBottom(Drawable& obj, RenderContext::Mode mode = RenderContext::Mode::Flat, int layer = 0)
+{
+	getInstance();
+	if (instance != 0)
+		instance->scr->drawBottom(obj, mode, layer);
 }
 
 //Print some text followed by a new line to the primary console.
 void Util::PrintLine(std::string text)
 {
-	this->console->println(text);
+	getInstance();
+	if (instance != 0)
+		instance->console->println(text);
 }
 
 //Print some text to the primary console.
 void Util::Print(std::string text)
 {
-	this->console->print(text);
+	getInstance();
+	if (instance != 0)
+		instance->console->print(text);
+}
+
+bool Util::IsConsoleDrawn()
+{
+	getInstance();
+	if (instance != 0)
+		return instance->console->isDrawn();
+
+	return false;
 }

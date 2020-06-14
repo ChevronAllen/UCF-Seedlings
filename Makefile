@@ -33,12 +33,12 @@ include $(DEVKITARM)/3ds_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source	source/lua	source/m3diaLibCI
-DATA		:=	data
+SOURCES		:=	source	source/lua	source/m3diaLibCI	source/menus	source/gameObjects
+DATA		:=	assets/data
 INCLUDES	:=	include
-GRAPHICS	:=	gfx
+GRAPHICS	:=	assets/gfx
 GFXBUILD	:=	$(BUILD)
-ROMFS		:=	romfs
+ROMFS		:=	assets
 #GFXBUILD	:=	$(ROMFS)/gfx
 APP_TITLE	:= 	GZLO
 APP_DESCRIPTION	:=	learn simple programing principles
@@ -56,12 +56,13 @@ CFLAGS	:=	-g -Wall -O2 -mword-relocations \
 
 CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS -DLUA_32BITS -DLUA_C89_NUMBERS
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11 
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++11 
+# removed flag -fno-exceptions
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map) 
 
-LIBS	:= -lm3dia -lcitro2d -lcitro3d -lctru -lm
+LIBS	:= -lm3dia -lcitro2d -lcitro3d -lctru -lpng -lm -lz
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing

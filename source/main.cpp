@@ -1,45 +1,80 @@
-#include "util.hpp"
-#include "ObjectManager.hpp"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <3ds.h>
 #include <m3dia.hpp>
+#include <png.h>
+#include "lua/lua.hpp"
+
+#include "util.hpp"
+#include "ObjectManager.hpp"
+#include "MenuHandler.hpp"
+#include "sandbox.h"
+#include "resources.h"
+#include "gameManager.hpp"
+#include "gameObjects/testObject.cpp"
 
 using namespace m3d;
 
-/*
-    The Lua API is built in C.
-    In a C++ program it has to be included like this.
-*/
-extern "C"
-{
-    #include "lua/lua.h"
-    #include "lua/lualib.h"
-    #include "lua/lauxlib.h"
-}
-
 int main(int argc, char* argv[])
 {
-	//Create default Applet and Screen variables
-    Applet app;
-    Screen scr;
 	
-	//Create default Singleton instances of Utility class and ObjectManager class
-	Util *util = Util::createInstance(&scr, &app);
-	ObjectManager *om = ObjectManager::createInstance(&scr);
-	
+    GameManager::Initialize();
+    Applet *app = GameManager::getApplet();
+    Screen *scr = GameManager::getScreen();
+
+	m3d::Sprite spr;
+    m3d::Texture * tex_ptr;
+    std::string id = "gfx/error.png";
+
+	//  Create default Singleton instances of Utility class and ObjectManager class
+	Util *util = Util::createInstance(scr, app);
+	ObjectManager *om = ObjectManager::createInstance(scr);
+	MenuHandler *mh = MenuHandler::createInstance(scr);
+	ResourceManager::initialize();
+
+  
+    tex_ptr = ResourceManager::loadTexture(id);  
+    tex_ptr = ResourceManager::getTexture(id);  
+
+    spr.setTexture(*tex_ptr);
+    spr.setXScale(10);
+    spr.setYScale(10);
+
+    //  Create a Sandbox environment (done here for testing)
+	LuaSandbox* sandbox = new LuaSandbox();
+
+    TestObject obj;
+    obj.initialize();
+    
+
+  
 	// Main loop
-    while (app.isRunning())
+	while (app->isRunning())
 	{
-		//Call OnUpdate Function for all Singletons.
+		//  Call OnUpdate Function for all Singletons.
+        GameManager::Update();
 		util->OnUpdate();
-		om->OnUpdate();
-	
-		//Render the game screen
-		scr.render();
+		//om->OnUpdate();
+		//mh->OnUpdate();
+
+        
+
+        obj.update();
+
+      
+		//scr->drawTop(spr); // draw the sprite 
+        obj.draw();
+        //  Render the game screen
+		scr->render();
 	}
+	
+    sandbox->close();
+	
+	delete (util);
+	delete (om);
+	delete (mh);
 	
 	return 0;
 }

@@ -33,6 +33,9 @@ class ObjectManager
 		static ObjectManager *instance;
 		ObjectManager(Screen* screen);
 	public:
+		//Destructor: Objects that must be deleted when this object is deleted. Delete(nullptr) is fail-safe.
+		virtual ~ObjectManager();
+
 		static ObjectManager* getInstance();
 		static ObjectManager* createInstance(Screen* screen);
 		
@@ -40,8 +43,12 @@ class ObjectManager
 		void OnUpdate();
 		
 		//Rectangle button creation. Adds button to array of active buttons.
-		m3dCI::Button* CreateButton(int x, int y, int w, int h, m3d::Color color);
+		m3dCI::Button* CreateButton(int x, int y, int w, int h, m3d::Color color, m3d::Color borderColor, int borderWidth);
 		
 		//Circular button creation. Adds button to array of active buttons.
-		m3dCI::Button* CreateButton(int x, int y, int radius, m3d::Color color);
+		m3dCI::Button* CreateButton(int x, int y, int radius, m3d::Color color, m3d::Color borderColor, int borderWidth);
+
+		m3dCI::Button* CreateButton(int px, int py, m3d::Texture& t_texture);
+
+		m3dCI::Button* CreateButton(int px, int py, const std::string& t_spriteSheet, int t_imageId);
 };

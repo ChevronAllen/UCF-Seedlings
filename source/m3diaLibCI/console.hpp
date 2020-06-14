@@ -17,6 +17,9 @@ namespace m3dCI
 		public:
 			//Default Console constructor. Creates a background with a textbox for console output
 			Console(std::string defaultText);
+
+			//Deconstructor: Delete objects which were created solely for this object.
+			virtual ~Console();
 			//Toggle the state of the console (visible to invisible)
 			void ToggleState();
 			//Prints the last 10 lines, any previous lines after are ignored
