@@ -13,13 +13,15 @@
 #include "sandbox.h"
 #include "resources.h"
 #include "gameManager.hpp"
+#include "sceneManager.hpp"
 #include "gameObjects/testObject.cpp"
+#include "scenes/startScene.cpp"
 
 using namespace m3d;
 
 int main(int argc, char* argv[])
 {
-	
+
     GameManager::Initialize();
     Applet *app = GameManager::getApplet();
     Screen *scr = GameManager::getScreen();
@@ -34,9 +36,9 @@ int main(int argc, char* argv[])
 	MenuHandler *mh = MenuHandler::createInstance(scr);
 	ResourceManager::initialize();
 
-  
-    tex_ptr = ResourceManager::loadTexture(id);  
-    tex_ptr = ResourceManager::getTexture(id);  
+
+    tex_ptr = ResourceManager::loadTexture(id);
+    tex_ptr = ResourceManager::getTexture(id);
 
     spr.setTexture(*tex_ptr);
     spr.setXScale(10);
@@ -47,34 +49,36 @@ int main(int argc, char* argv[])
 
     TestObject obj;
     obj.initialize();
-    
 
-  
+		startScene *tester;
+		tester->initialize();
+
+		SceneManager::initialize(tester);
+
 	// Main loop
 	while (app->isRunning())
 	{
 		//  Call OnUpdate Function for all Singletons.
         GameManager::Update();
+				//SceneManager::draw();
 		util->OnUpdate();
 		//om->OnUpdate();
 		//mh->OnUpdate();
 
-        
-
         obj.update();
 
-      
-		//scr->drawTop(spr); // draw the sprite 
+
+		//scr->drawTop(spr); // draw the sprite
         obj.draw();
         //  Render the game screen
 		scr->render();
 	}
-	
+
     sandbox->close();
-	
+
 	delete (util);
 	delete (om);
 	delete (mh);
-	
+
 	return 0;
 }

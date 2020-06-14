@@ -22,12 +22,12 @@ public:
     ~TestObject()
     {
         texture = NULL;
-        delete(sprite);
+        //delete(sprite);
     }
 
-    void initialize() 
+    void initialize()
     {
-        
+
         texture = ResourceManager::getTexture("gfx/error.png");
         sprite = new m3d::Sprite();
         sprite->setTexture(*texture);
@@ -36,7 +36,7 @@ public:
     }
 
     void update() {
-        
+
         if(m3d::buttons::buttonDown(m3d::buttons::L))
         {
             angle -= 90 * GameManager::getDeltaTime();
@@ -75,11 +75,11 @@ public:
         sprite->setRotation(angle);
         sprite->setScale(xScale,yScale);
     };
-    
+
     void draw()
     {
         m3d::Screen * screen = GameManager::getScreen();
- 
+
         sprite->setPosition(x,y);
         screen->drawTop(*sprite);
 

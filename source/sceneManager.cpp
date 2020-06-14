@@ -1,6 +1,8 @@
 #include "sceneManager.hpp"
 
+
 SceneManager * m_instance = nullptr;
+
 
 Scene* SceneManager::getScene()
 {
@@ -29,6 +31,17 @@ void  SceneManager::transitionTo(Scene* t_next)
 
 }
 
-void  SceneManager::initialize(){}
+void  SceneManager::initialize(Scene *tester){
+  //  m_currentScene = tester;
+  startScene *tester;
+  tester->initialize();
+  if(m_instance == NULL)
+  {
+      m_instance = new SceneManager();
+  }
+  m_currentScene = tester;
+}
 void  SceneManager::update(){}
-void  SceneManager::draw(){}
+void  SceneManager::draw(){
+  m_currentScene->draw();
+}
