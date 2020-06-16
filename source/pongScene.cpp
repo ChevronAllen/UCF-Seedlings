@@ -8,6 +8,7 @@ class pongScene : public Scene
 
 	private:
 		m3d::Rectangle *top, *bottom, *leftPaddle, *rightPaddle, *division;
+		m3d::Circle *midcourt;
 		m3d::Text *tex;
 		m3d::Color *c1, *c2;
 
@@ -25,7 +26,9 @@ class pongScene : public Scene
 			bottom = new m3d::Rectangle(0, 0, 320, 240, *c1);
 			leftPaddle = new m3d::Rectangle(10,70,10,50,*c2);
 			rightPaddle = new m3d::Rectangle(380,70,10,50,*c2);
-			division = new m3d::Rectangle(195,0,5,400,*c2);
+			division = new m3d::Rectangle(200,0,5,400,*c2);
+
+			midcourt = new m3d::Circle(150,70,50,*c2);
 
 
 			tex = new m3d::Text("Pong", *c2);
@@ -40,6 +43,7 @@ class pongScene : public Scene
 			scr->drawTop(*leftPaddle);
 			scr->drawTop(*rightPaddle);
 			scr->drawTop(*division);
+			scr->drawTop(*midcourt);
 			scr->drawBottom(*bottom);
 			scr->drawBottom(*tex);
 		}
