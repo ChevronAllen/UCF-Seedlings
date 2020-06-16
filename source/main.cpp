@@ -48,8 +48,8 @@ int main(int argc, char* argv[])
     //  Create a Sandbox environment (done here for testing)
 	LuaSandbox* sandbox = new LuaSandbox();
 
-    TestObject obj;
-    obj.initialize();
+    //TestObject obj;
+    //obj.initialize();
 
 	//startScene *tester;
 	//tester->initialize();
@@ -69,11 +69,11 @@ int main(int argc, char* argv[])
 		//om->OnUpdate();
 		//mh->OnUpdate();
 
-        obj.update();
+        //obj.update();
 
 		p->draw();
 		//scr->drawTop(spr); // draw the sprite
-        obj.draw();
+        //obj.draw();
         //  Render the game screen
 		scr->render();
 	}
