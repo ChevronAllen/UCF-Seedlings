@@ -3,9 +3,6 @@
 #include "scene.hpp"
 #include "resources.h"
 
-
-//using namespace m3d;
-
 class nextScene : public Scene
 {
 

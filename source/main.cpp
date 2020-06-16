@@ -16,6 +16,7 @@
 #include "sceneManager.hpp"
 #include "gameObjects/testObject.cpp"
 #include "scenes/startScene.cpp"
+#include "pongScene.cpp"
 
 using namespace m3d;
 
@@ -50,10 +51,12 @@ int main(int argc, char* argv[])
     TestObject obj;
     obj.initialize();
 
-		startScene *tester;
-		tester->initialize();
+	//startScene *tester;
+	//tester->initialize();
 
-		SceneManager::initialize(tester);
+	//SceneManager::initialize();
+	pongScene* p; 
+	p->initialize();
 
 	// Main loop
 	while (app->isRunning())
