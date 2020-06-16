@@ -55,7 +55,8 @@ int main(int argc, char* argv[])
 	//tester->initialize();
 
 	//SceneManager::initialize();
-	pongScene* p; 
+	pongScene *p = new pongScene();
+
 	p->initialize();
 
 	// Main loop
@@ -70,7 +71,7 @@ int main(int argc, char* argv[])
 
         obj.update();
 
-
+		p->draw();
 		//scr->drawTop(spr); // draw the sprite
         obj.draw();
         //  Render the game screen
