@@ -11,7 +11,7 @@ class pongScene : public Scene
 	private:
 		m3d::Rectangle* top;
 		m3d::Rectangle* bottom;
-		m3d::Text tex;
+		m3d::Text *tex;
 		m3d::Color* c1;
 		m3d::Color* c2;
 
