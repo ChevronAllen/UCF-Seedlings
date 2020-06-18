@@ -71,6 +71,8 @@ int main(int argc, char* argv[])
 
         //obj.update();
 
+		p->update();
+
 		p->draw();
 		//scr->drawTop(spr); // draw the sprite
         //obj.draw();

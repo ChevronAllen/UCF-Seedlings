@@ -1,55 +1,49 @@
 #include "../gameObject.hpp"
+#include "../gameManager.hpp"
 
 class PongPaddle : public GameObject
 {
 
 	private:
+        m3d::Color *color;
+        m3d::Rectangle *PongRec;
 
 	public:
-		virtual void initialize() {};
-		virtual void update() = 0;
-		virtual void draw() = 0;
+        PongPaddle(int _x, int _y)
+        {
+            x = _x;
+            y = _y;
+        }
 
-		virtual void destroy() = 0;
-		virtual void moveTo(double x, double y) = 0;
-		virtual void Rotate(double deg) = 0;
+        ~PongPaddle() {
+            color = NULL;
+            PongRec = NULL;
+        }
 
-		void setAngle(double _angle)
-		{
-			angle = _angle;
-		}
-		double getAngle()
-		{
-			return angle;
-		}
+        void initialize() {
+            color = new m3d::Color(0,0,100);
+            PongRec = new m3d::Rectangle(x,y,10,50,*color);
+        }
 
-		void setScale(double _x, double _y)
-		{
-			x = _x;
-			y = _y;
-		}
-		m3d::Vector2f getScale()
-		{
-			m3d::Vector2f scale;
-			scale.u = xScale;
-			scale.v = yScale;
-			return scale;
-		}
+        void update() {
+            x = PongRec->getXPosition();
+            y = PongRec->getYPosition();
+        }
 
-		void setPosition(double _x, double _y)
-		{
-			x = _x;
-			y = _y;
-		}
-		m3d::Vector2f getPosition()
-		{
-			m3d::Vector2f pos;
-			pos.u = x;
-			pos.v = y;
-			return pos;
-		}
+        void draw() {
+            m3d::Screen *screen = GameManager::getScreen();
+            screen->drawTop(*PongRec);
+        }
 
-		bool screenIntersect();
+        void moveTo(double _x, double _y) {
+            PongRec->setYPosition(PongRec->getYPosition() + _y);
+        }
 
+        void destroy() {
+            this->~PongPaddle();
+        }
 
+        void Rotate(double deg) {
+            PongRec->setPosition(this->y, this->x);
+        }
 };
