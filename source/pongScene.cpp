@@ -64,7 +64,7 @@ class pongScene : public Scene
 			}
 			if (m3d::buttons::buttonDown(m3d::buttons::Button::Down))
 			{
-				leftPaddle->moveTo(0,1);
+				 leftPaddle->moveTo(0,1);
 			}
 			
 		};
