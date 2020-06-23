@@ -17,8 +17,7 @@ MainMenu::MainMenu(m3d::Screen* screen) :
 
 	StartupText->setPosition((topScreenWidth / 2) - (width / 2), (screenHeight / 2) - (height / 2));
 
-	whiteTopBackground = new m3d::Rectangle(0, 0, 1000, 1000, m3d::Color(255, 255, 255));
-	whiteBottomBackground = new m3d::Rectangle(0, 0, 1000, 1000, m3d::Color(255, 255, 255));
+	whiteBackground = new m3d::Rectangle(0, 0, 1000, 1000, m3d::Color(255, 255, 255));
 
 	int clickHereToContinueX = ((bottomScreenWidth)-(bottomScreenWidth*0.8)) / 2;
 	int clickHereToContinueY = ((screenHeight)-(screenHeight*0.3));
@@ -30,16 +29,16 @@ MainMenu::MainMenu(m3d::Screen* screen) :
 
 void MainMenu::OnUpdate()
 {
-	if(!util->IsConsoleDrawn())
-	{
-		if (m3d::buttons::buttonReleased(m3d::buttons::Button::Start))
-			ClickHereToContinue->OnTouch(ClickHereToContinue);
+	if (util->IsConsoleDrawn())
+		return;
 
-		scr->drawTop(*whiteTopBackground, RenderContext::Mode::Flat);
-		scr->drawBottom(*whiteBottomBackground, RenderContext::Mode::Flat);
-		scr->drawTop(*StartupText, RenderContext::Mode::Flat);
-		scr->drawBottom(*ClickHereToContinue, RenderContext::Mode::Flat);
-	}
+	if (m3d::buttons::buttonReleased(m3d::buttons::Button::Start))
+		ClickHereToContinue->OnTouch(ClickHereToContinue);
+
+	scr->drawTop(*whiteBackground, RenderContext::Mode::Flat);
+	scr->drawBottom(*whiteBackground, RenderContext::Mode::Flat);
+	scr->drawTop(*StartupText, RenderContext::Mode::Flat);
+	scr->drawBottom(*ClickHereToContinue, RenderContext::Mode::Flat);
 }
 
 //Destructor: Objects that must be deleted when this object is deleted. Delete(nullptr) is fail-safe.
@@ -48,9 +47,9 @@ MainMenu::~MainMenu()
 	delete(StartupText);
 	//The following commented out object don't have deletion support. They *should* be grabbed by the garbage collector. 
 	//Ideally, we would change these objects to support a default virtual deconstructor
-	/*delete(whiteTopBackground);
-	delete(whiteBottomBackground);*/
-	delete(ClickHereToContinue);
+	//delete(whiteBackground);
+	//delete(whiteBottomBackground);
+	om->DeleteButton(ClickHereToContinue);
 }
 
 void MainMenu::ClickHereToContinue_OnClick(m3dCI::Button* button)

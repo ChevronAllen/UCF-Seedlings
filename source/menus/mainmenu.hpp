@@ -5,8 +5,7 @@
 class MainMenu : public Menu
 {
 	private:
-		m3d::Rectangle* whiteTopBackground;
-		m3d::Rectangle* whiteBottomBackground;
+		m3d::Rectangle* whiteBackground;
 
 		m3dCI::Text* StartupText;
 		m3dCI::Button* ClickHereToContinue;

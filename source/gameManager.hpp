@@ -13,8 +13,8 @@ class GameManager
 private:
     static GameManager * instance;
     
-    m3d::Applet *applet;
-    m3d::Screen *screen;
+    static m3d::Applet *applet;
+    static m3d::Screen *screen;
 
     time_t lastTime;
     time_t curTime;
@@ -22,8 +22,8 @@ private:
 
     GameManager()
     {
-        applet = new m3d::Applet();
-        screen = new m3d::Screen();
+        //applet = new m3d::Applet();
+        //screen = new m3d::Screen(false);
         lastTime = curTime = time(NULL);
         deltaTime = 0;
     }
@@ -35,10 +35,11 @@ private:
 
     static GameManager* getInstance()
     {
+        /*
         if(instance == NULL){
             Initialize();
         }
-
+        */
         return instance;
     }
 
@@ -47,15 +48,15 @@ public:
     static m3d::BoundingBox* ScreenBoundsBottom;
 
 
-    static void Initialize();
+    static void Initialize(m3d::Applet*, m3d::Screen*);
     static void Update();
     static double getDeltaTime()
     {
         return (1.0/60.0) ;
     }
 
-    static m3d::Applet* getApplet(){return getInstance()->applet;}
-    static m3d::Screen* getScreen(){return getInstance()->screen;}
+    static m3d::Applet* getApplet(){ return applet;}
+    static m3d::Screen* getScreen(){ return screen;}
 
     
 

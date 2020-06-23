@@ -14,68 +14,43 @@
 #include "resources.h"
 #include "gameManager.hpp"
 #include "sceneManager.hpp"
-#include "gameObjects/testObject.cpp"
+#include "gameObjects/wall.cpp"
 #include "scenes/startScene.cpp"
 #include "pongScene.cpp"
+#include "scenes/MazeScene.cpp"
+#include "inputManager.hpp"
 
 using namespace m3d;
 
 int main(int argc, char* argv[])
 {
-
-    GameManager::Initialize();
-    Applet *app = GameManager::getApplet();
-    Screen *scr = GameManager::getScreen();
-
-	m3d::Sprite spr;
-    m3d::Texture * tex_ptr;
-    std::string id = "gfx/error.png";
+	//  Create default Applet and Screen variables
+    Applet *app = new Applet();
+    Screen *scr = new Screen(false);
+	
+    GameManager::Initialize(app, scr);
+    //  Create a Sandbox environment (done here for testing)
+	LuaSandbox* sandbox = new LuaSandbox();
 
 	//  Create default Singleton instances of Utility class and ObjectManager class
 	Util *util = Util::createInstance(scr, app);
 	ObjectManager *om = ObjectManager::createInstance(scr);
 	MenuHandler *mh = MenuHandler::createInstance(scr);
 	ResourceManager::initialize();
+    Input::initialize();
 
-
-    tex_ptr = ResourceManager::loadTexture(id);
-    tex_ptr = ResourceManager::getTexture(id);
-
-    spr.setTexture(*tex_ptr);
-    spr.setXScale(10);
-    spr.setYScale(10);
-
-    //  Create a Sandbox environment (done here for testing)
-	LuaSandbox* sandbox = new LuaSandbox();
-
-    //TestObject obj;
-    //obj.initialize();
-
-	//startScene *tester;
-	//tester->initialize();
-
-	//SceneManager::initialize();
-	pongScene *p = new pongScene();
-
-	p->initialize();
-
+	
 	// Main loop
 	while (app->isRunning())
 	{
 		//  Call OnUpdate Function for all Singletons.
         GameManager::Update();
-				//SceneManager::draw();
+        //SceneManager::draw();
+        Input::update();
 		util->OnUpdate();
-		//om->OnUpdate();
-		//mh->OnUpdate();
+		om->OnUpdate();
+		mh->OnUpdate();
 
-        //obj.update();
-
-		p->update();
-
-		p->draw();
-		//scr->drawTop(spr); // draw the sprite
-        //obj.draw();
         //  Render the game screen
 		scr->render();
 	}
@@ -83,8 +58,7 @@ int main(int argc, char* argv[])
     sandbox->close();
 
 	delete (util);
-	delete (om);
 	delete (mh);
-
+	delete (om);
 	return 0;
 }

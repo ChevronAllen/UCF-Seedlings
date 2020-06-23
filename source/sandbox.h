@@ -185,7 +185,13 @@ public:
      *  Execute a chunk of lua code. 
      *  @throw exception if the system runs out of memory while copying the codeblock
      */
-    void execute(std::string );
+    void executeString(std::string );
+
+    /**
+     *  Execute a chunk of lua code. 
+     *  @throw exception if the system runs out of memory while copying the codeblock
+     */
+    void executeFile(std::string );
 
     void close();
 };

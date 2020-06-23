@@ -18,20 +18,20 @@ namespace m3dCI
 		private:
 			ButtonType buttonType;
 			
-			m3d::Rectangle* innerRectangle;
-			m3d::Rectangle* outerRectangle;
-			m3d::Circle* innerCircle;
-			m3d::Circle* outerCircle;
+			m3d::Rectangle* innerRectangle = nullptr;
+			m3d::Rectangle* outerRectangle = nullptr;
+			m3d::Circle* innerCircle = nullptr;
+			m3d::Circle* outerCircle = nullptr;
 
-			m3dCI::Sprite* sprite;
+			m3dCI::Sprite* sprite = nullptr;
 
-			m3dCI::Text* text;
+			m3dCI::Text* text = nullptr;
 
-			m3d::Color innerColor, outerColor;
+			m3d::Color innerColor, outerColor, *disabledColor = nullptr;
 
 			int x, y, borderWidth, w, h, r;
-			
-			void SetDefaults();
+
+			bool enabled = true;
 
 			void UpdateShape();
 		public:
@@ -49,15 +49,15 @@ namespace m3dCI
 			
 			//The function which is called when the touch event is touched over the button.
 			// Called if a single touch is over the button and the touch happened on the same frame
-			void (*OnTouch)(Button*);
+			void (*OnTouch)(Button*) = nullptr;
 			
 			//The function which is called when the touch event is released over the button.
 			// Called when a touch is released over a button.
-			void (*OnRelease)(Button*);
+			void (*OnRelease)(Button*) = nullptr;
 			
 			//The function which is called when the touch event is held over the button.
 			// Called when a touch is over a button, but the initial touch did not happen on the frame being called
-			void (*OnHeld)(Button*);
+			void (*OnHeld)(Button*) = nullptr;
 			
 			//Check if a point intersects with the button
 			bool PointIntersects(int x, int y);
@@ -67,6 +67,9 @@ namespace m3dCI
 			
 			void SetText(std::string txt);
 			void SetTextColor(m3d::Color color);
+
+			bool GetEnabledState();
+			void SetEnabledState(bool state);
 
 			/*
 			

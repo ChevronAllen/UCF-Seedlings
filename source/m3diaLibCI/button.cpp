@@ -4,13 +4,12 @@
 m3dCI::Button::Button(int px, int py, int pw, int ph, m3d::Color p_innerColor, m3d::Color p_borderColor, int p_borderWidth = 3)
 : m3d::Drawable()
 {
-	SetDefaults();
-
 	x = px;
 	y = py;
 	w = pw;
 	h = ph;
 	innerColor = p_innerColor;
+	disabledColor = new m3d::Color(p_innerColor.getRed() - 60, p_innerColor.getGreen() - 60, p_innerColor.getBlue() - 60);
 	outerColor = p_borderColor;
 
 	borderWidth = p_borderWidth;
@@ -27,8 +26,6 @@ m3dCI::Button::Button(int px, int py, int pw, int ph, m3d::Color p_innerColor, m
 m3dCI::Button::Button(int px, int py, m3d::Texture& t_texture)
 	: m3d::Drawable()
 {
-	SetDefaults();
-
 	x = px;
 	y = py;
 
@@ -47,8 +44,6 @@ m3dCI::Button::Button(int px, int py, m3d::Texture& t_texture)
 m3dCI::Button::Button(int px, int py, const std::string& t_spriteSheet, int t_imageId = 0)
 	: m3d::Drawable()
 {
-	SetDefaults();
-
 	x = px;
 	y = py;
 
@@ -66,8 +61,6 @@ m3dCI::Button::Button(int px, int py, const std::string& t_spriteSheet, int t_im
 m3dCI::Button::Button(int px, int py, int pr, m3d::Color p_innerColor, m3d::Color p_borderColor, int p_borderWidth = 3)
 : m3d::Drawable()
 {
-	SetDefaults();
-
 	x = px;
 	y = py;
 	r = pr;
@@ -94,6 +87,8 @@ m3dCI::Button::~Button()
 	delete(outerRectangle);
 	delete(innerCircle);
 	delete(outerCircle);*/
+	if(disabledColor != nullptr)
+		delete(disabledColor);
 	delete(sprite);
 	delete(text);
 }
@@ -176,23 +171,6 @@ void m3dCI::Button::draw(m3d::RenderContext t_context)
 		text->draw(t_context);
 }
 
-//Set the default values for any Button to null, then override them as seen fit
-void m3dCI::Button::SetDefaults()
-{
-	innerRectangle = nullptr;
-	innerCircle = nullptr;
-	outerRectangle = nullptr;
-	outerCircle = nullptr;
-
-	sprite = nullptr;
-
-	text = nullptr;
-
-	OnTouch = nullptr;
-	OnHeld = nullptr;
-	OnRelease = nullptr;
-}
-
 //Determine if a point intersects the Button
 bool m3dCI::Button::PointIntersects(int p_x, int p_y)
 {
@@ -229,6 +207,19 @@ void m3dCI::Button::SetTextColor(m3d::Color color)
 {
 	if (text != nullptr)
 		text->setColor(color);
+}
+
+void m3dCI::Button::SetEnabledState(bool state)
+{
+	if(buttonType == ButtonType::Rectangle)
+		innerRectangle->setColor(state ? innerColor : *disabledColor);
+
+	enabled = state;
+}
+
+bool m3dCI::Button::GetEnabledState()
+{
+	return enabled;
 }
 			
 /*

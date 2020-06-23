@@ -214,8 +214,16 @@ namespace m3dCI {
         C2D_SpriteFromSheet(&m_sprite, m_spriteSheet, m_index);
     }
 
-    void Sprite::setTexture(m3d::Texture& t_texture) {
+    void Sprite::setTexture(m3d::Texture& t_texture)
+	{
+		//This is the dumbest thing I have ever encoutered as a developer.
+		// When loading the sprite, the position of the Sprite object resets to 0,0.
+		//This implementation just resets the previous values. 
+		int x = getXPosition();
+		int y = getYPosition();
         C2D_SpriteFromImage(&m_sprite, t_texture.getImage());
+
+		setPosition(x, y);
     }
 
     const std::string& Sprite::getSpriteSheet() {
@@ -235,4 +243,17 @@ namespace m3dCI {
 
         m_imageTint = { tint, tint, tint, tint };
     }
+
+
+    m3dCI::Sprite* m3dCI::Sprite::createFromSheet(C2D_SpriteSheet& t_sheet,int t_index)
+    {
+        Sprite* sprite = new Sprite();
+
+        sprite->m_spriteSheet = t_sheet;
+        sprite->m_index = t_index;
+        C2D_SpriteFromSheet(&(sprite->m_sprite), sprite->m_spriteSheet, sprite->m_index);
+
+        return sprite;
+    }
+
 } /* m3d */

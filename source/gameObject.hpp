@@ -6,9 +6,17 @@ class GameObject : public Updateable
 protected:
     double x;
     double y;
+    double target_x;
+    double target_y;
+    
     double angle;
+    double target_angle;
+
     double xScale;
+    double target_xScale;
+
     double yScale;
+    double target_yScale;
 
 public:
     virtual void initialize() = 0;

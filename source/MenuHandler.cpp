@@ -3,6 +3,7 @@
 #include "menus/menu.hpp"
 #include "menus/mainMenu.hpp"
 #include "menus/minigameSelect.hpp"
+#include "menus/minigameTemplateMenu.hpp"
 
 using namespace m3d;
 
@@ -69,30 +70,53 @@ void MenuHandler::OnUpdate()
 
 void MenuHandler::TransitionTo(MenuState state)
 {
+	scr->clear();//Causes screen to blink. Otherwise, the screen buffers dont get cleared between scenes. 
+
 	switch (state)
 	{
+		//This could be written much more efficiently. I had a different idea in mind when originally developing this.
 		case MenuState::MainMenu:
 		{
+			//theres no way to convert from enum to string in C++... uggh
+			util->PrintLine("Attempting transition to: MainMenu");
+
 			MainMenu* menu = new MainMenu(scr);
 
 			if (currentMenu != nullptr)
 				delete(currentMenu);
 
 			currentMenu = menu;
+			currentState = state;
 			break;
 		}
 		case MenuState::MinigameSelect:
 		{
+			util->PrintLine("Attempting transition to: MinigameSelect");
 			MinigameSelect* menu = new MinigameSelect(scr);
 
 			if (currentMenu != nullptr)
 				delete(currentMenu);
 
 			currentMenu = menu;
+			currentState = state;
+			break;
+		}
+		case MenuState::MinigameTemplateMenu:
+		{
+			//need to figure out which minigame to switch to and tell it so here
+			util->PrintLine("Attempting transition to: MinigameTemplateMenu");
+			MinigameTemplateMenu* menu = new MinigameTemplateMenu(scr);
+
+			if (currentMenu != nullptr)
+				delete(currentMenu);
+
+			currentMenu = menu;
+			currentState = state;
 			break;
 		}
 		case MenuState::Testing:
 		{
+			util->PrintLine("Attempting transition to: Testing");
 			break;
 		}
 		default:
@@ -100,5 +124,46 @@ void MenuHandler::TransitionTo(MenuState state)
 			util->PrintLine("Attempting to transition to menu state which has not been defined.");
 			break;
 		}
+	}
+
+	util->PrintLine("Transition complete.");
+}
+
+void MenuHandler::AddCommandObject(m3dCI::Button* button)
+{
+	MenuHandler* mh = getInstance();
+
+	if (mh == 0)
+		return;
+
+	if (mh->currentState == MenuState::MinigameTemplateMenu)
+	{
+		((MinigameTemplateMenu*)mh->currentMenu)->AddButton_OnClick(button);
+	}
+}
+
+void MenuHandler::RemoveCommandObject(m3dCI::Button* button)
+{
+	MenuHandler* mh = getInstance();
+
+	if (mh == 0)
+		return;
+
+	if (mh->currentState == MenuState::MinigameTemplateMenu)
+	{
+		((MinigameTemplateMenu*)mh->currentMenu)->DeleteButton_OnClick(button);
+	}
+}
+
+void MenuHandler::AddCommand(std::string command)
+{
+	MenuHandler* mh = getInstance();
+
+	if (mh == 0)
+		return;
+
+	if (mh->currentState == MenuState::MinigameTemplateMenu)
+	{
+		((MinigameTemplateMenu*)mh->currentMenu)->AddCommand(command);
 	}
 }

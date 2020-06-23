@@ -117,7 +117,7 @@ size_t LuaSandbox::getTotalMemoryUsed()
 }
 
 
-void LuaSandbox::execute(std::string text)
+void LuaSandbox::executeString(std::string text)
 {
 //  TODO: Needs a more thorough test
     // Temporary implementation, unprotected

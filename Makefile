@@ -33,14 +33,14 @@ include $(DEVKITARM)/3ds_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source	source/lua	source/m3diaLibCI	source/menus	source/gameObjects
+SOURCES		:=	source	source/lua	source/m3diaLibCI	source/menus	source/UserAPI	source/gameObjects 
 DATA		:=	assets/data
 INCLUDES	:=	include
 GRAPHICS	:=	assets/gfx
 GFXBUILD	:=	$(BUILD)
 ROMFS		:=	assets
-#GFXBUILD	:=	$(ROMFS)/gfx
-APP_TITLE	:= 	GZLO
+GFXBUILD	:=	$(ROMFS)/gfx
+APP_TITLE	:= 	Seedlings
 APP_DESCRIPTION	:=	learn simple programing principles
 APP_AUTHOR	:=	Damola Adebayo, Chevron Allen, Kenneth Rosario Rodriguez, Glenn Ruperto, Bryce Vichi
 
@@ -186,7 +186,8 @@ endif
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf $(GFXBUILD)
+	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf 
+#$(GFXBUILD)
 
 #---------------------------------------------------------------------------------
 $(GFXBUILD)/%.t3x	$(BUILD)/%.h	:	%.t3s

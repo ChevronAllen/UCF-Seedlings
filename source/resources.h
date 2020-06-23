@@ -1,10 +1,15 @@
 #pragma once
 #include <stdlib.h> 
+#include <string.h> 
 #include <iostream>
+#include <fstream>
 #include <exception>
 #include <map>
+#include <array>
 
 #include <m3dia.hpp>
+
+#include"m3diaLibCI/sprite.hpp"
 #include "util.hpp"
 
 #define ROMFS_PATH      "romfs:/"
@@ -25,15 +30,18 @@ private:
     ResourceManager();
     ~ResourceManager();
     
-    static ResourceManager* _instance;
-    static std::map<std::string, void*>* _hashmap;
+    //static ResourceManager* _instance;
+    static std::map<std::string, void*> _hashmap;
     static m3d::Texture * _error;
     static std::vector<std::string> _preloadTextures;
 
-    static ResourceManager* getInstance();
+    //static ResourceManager* getInstance();
 
+    static std::vector<std::string> readSpritesheet(std::string);
 
 public:
+    
+    
 
     /**
      *  @brief Initializes the Resource Manager
@@ -56,7 +64,13 @@ public:
      */
     static m3d::Texture* loadTexture(std::string);
 
-    static void loadTextureBatch(std::vector<std::string> );
+    /**
+     *  @brief  Loads a sprite sheet and generates sprites from its indexes. 
+     *  sprites are stored by filename within the ResourceManager
+     *  @param path path to the spritesheet relative to the asset folder (no extension)
+     *  @returns array of loaded sprites
+     */
+    static std::vector<m3dCI::Sprite*> loadSpritesheet(std::string);
 
     /**
      *  @brief Loads a Sound asset
@@ -75,6 +89,9 @@ public:
      */
     static void* loadFile(std::string);
 
+
+    //static m3d::Sprite* loadSpritesheet(std::string,int);
+
     /**
      *  Unloads all assets from the Resource manager
      */
@@ -86,7 +103,13 @@ public:
      */
     static void Unload(std::string);
 
-
+    
     static m3d::Texture* getTexture(std::string);
+
+    /**
+     *  @brief Attempts to retrieve a preloaded sprite
+     *  @returns m3dCI::Sprite* to loaded sprite
+     */
+    static m3dCI::Sprite* getSprite(std::string);
 
 };

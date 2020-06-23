@@ -65,11 +65,12 @@ Util::~Util()
 //The function which is called on every game frame.
 void Util::OnUpdate()
 {	
+    /*
 	//Check for force close button presses, Close if successful
 	if (buttonDown(buttons::Button::Start)
 		&& buttonDown(buttons::Button::Select))
 		this->app->exit();
-	
+	*/
 	//Check for Console Opening button presses, Open console if successful
 	if (buttonPressed(buttons::Button::L)
 		&& buttonPressed(buttons::Button::R))

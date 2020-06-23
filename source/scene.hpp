@@ -4,8 +4,6 @@
 #include <string.h>
 #include <map>
 #include <memory>
-
-
 #include "gameObject.hpp"
 
 class Scene : public Updateable
@@ -39,7 +37,7 @@ public:
     virtual void draw()=0;
 
     virtual void onEnter()=0;
-    
+
     virtual void onExit()=0;
 
     unsigned int addObject(GameObject* obj)

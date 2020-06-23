@@ -71,29 +71,73 @@ void ObjectManager::OnUpdate()
 		touchReleasedThisFrame = hidKeysUp() & KEY_TOUCH,
 		touchx = m3d::touch::getXPosition(),
 		touchy = m3d::touch::getYPosition();
-	
-	for(uint i = 0; i < arr.size(); i++)
-	{		
-		//Check for touch event on Button
-		if(touchedThisFrame)
+
+	std::vector<m3dCI::Button*> buttonsClone(buttons);
+	std::vector<m3dCI::CodeEditor*> codeEditorsClone(codeEditors);
+	std::vector<m3dCI::CommandLister*> commandListersClone(commandListers);
+
+	for (unsigned int i = 0; i < codeEditorsClone.size(); i++)
+	{
+		if (codeEditorsClone[i] == nullptr)
+			continue;
+
+		//only fires if point is actually inside the code editor
+
+		if (touchReleasedThisFrame && !Input::isTouchDragging() && !draggedLastFrame)
+			codeEditorsClone[i]->SelectCommand(lastFrameTouchX, lastFrameTouchY);
+
+		if (draggedLastFrame && touchReleasedThisFrame && codeEditorsClone[i]->isPointInside(lastFrameTouchX, lastFrameTouchY))
+			codeEditorsClone[i]->DragComplete();
+
+		if (Input::isTouchDragging())
 		{
-			if(arr[i]->OnTouch != nullptr && arr[i]->PointIntersects(touchx, touchy))
-				(arr[i]->OnTouch)(arr[i]);
+			int tX = Input::getTouchDragOrigin()->u;
+			int tY = Input::getTouchDragOrigin()->v;
+
+			if (codeEditorsClone[i]->isPointInside(tX, tY))
+				codeEditorsClone[i]->DoDrag(Input::getTouchDragVector());
 		}
-		else if(touchReleasedThisFrame)
+	}
+
+	if (touchReleasedThisFrame)
+	{
+		for (unsigned int i = 0; i < commandListersClone.size(); i++)
 		{
-			if(arr[i]->OnRelease != nullptr && arr[i]->PointIntersects(lastFrameTouchX, lastFrameTouchY))
-				(arr[i]->OnRelease)(arr[i]);
+			if (commandListersClone[i] == nullptr)
+				continue;
+
+			//only fires if point is actually inside the command lister
+			commandListersClone[i]->SelectPoint(lastFrameTouchX, lastFrameTouchY);
+		}
+	}
+	
+	for (unsigned int i = 0; i < buttonsClone.size(); i++)
+	{
+		if (buttonsClone[i] == nullptr || !buttonsClone[i]->GetEnabledState())
+			continue;
+
+		//Check for touch event on Button
+		if (touchedThisFrame)
+		{
+			if (buttonsClone[i]->OnTouch != nullptr && buttonsClone[i]->PointIntersects(touchx, touchy))
+				(buttonsClone[i]->OnTouch)(buttonsClone[i]);
+		}
+		else if (touchReleasedThisFrame)
+		{
+			if (buttonsClone[i]->OnRelease != nullptr && buttonsClone[i]->PointIntersects(lastFrameTouchX, lastFrameTouchY))
+				(buttonsClone[i]->OnRelease)(buttonsClone[i]);
 		}
 		else
 		{
-			if(arr[i]->OnHeld != nullptr && arr[i]->PointIntersects(touchx, touchy))
-				(arr[i]->OnHeld)(arr[i]);
+			if (buttonsClone[i]->OnHeld != nullptr && buttonsClone[i]->PointIntersects(touchx, touchy))
+				(buttonsClone[i]->OnHeld)(buttonsClone[i]);
 		}
 	}
 	
 	lastFrameTouchX = touchx;
 	lastFrameTouchY = touchy;
+
+	draggedLastFrame = Input::isTouchDragging();
 }
 
 //Rectangle button creation. Adds button to array of active buttons.
@@ -101,7 +145,7 @@ m3dCI::Button* ObjectManager::CreateButton(int x, int y, int w, int h, m3d::Colo
 {
 	m3dCI::Button* newButton = new m3dCI::Button(x, y, w, h, color, borderColor, borderWidth);
 	
-	arr.push_back(newButton);
+	buttons.push_back(newButton);
 	
 	return newButton;
 }
@@ -111,7 +155,7 @@ m3dCI::Button* ObjectManager::CreateButton(int x, int y, int radius, m3d::Color 
 {
 	m3dCI::Button* newButton = new m3dCI::Button(x, y, radius, color, borderColor, borderWidth);
 	
-	arr.push_back(newButton);
+	buttons.push_back(newButton);
 	
 	return newButton;
 }
@@ -121,7 +165,7 @@ m3dCI::Button* ObjectManager::CreateButton(int x, int y, m3d::Texture& t_texture
 {
 	m3dCI::Button* newButton = new m3dCI::Button(x, y, t_texture);
 
-	arr.push_back(newButton);
+	buttons.push_back(newButton);
 
 	return newButton;
 }
@@ -131,7 +175,70 @@ m3dCI::Button* ObjectManager::CreateButton(int x, int y, const std::string& t_sp
 {
 	m3dCI::Button* newButton = new m3dCI::Button(x, y, t_spriteSheet, t_imageId);
 
-	arr.push_back(newButton);
+	buttons.push_back(newButton);
 
 	return newButton;
+}
+
+void ObjectManager::DeleteButton(m3dCI::Button* button)
+{
+	int index = -1;
+
+	for (unsigned int i = 0; i < buttons.size(); i++)
+		if (buttons[i] == button)
+			index = i;
+
+	if (index != -1)
+	{
+		delete(buttons[index]);
+		buttons.erase(buttons.begin() + index);
+	}
+}
+
+m3dCI::CodeEditor* ObjectManager::CreateCodeEditor(int x, int w, int borderWidth)
+{
+	m3dCI::CodeEditor* ce = new m3dCI::CodeEditor(x, w, borderWidth);
+
+	codeEditors.push_back(ce);
+
+	return ce;
+}
+
+void ObjectManager::DeleteCodeEditor(m3dCI::CodeEditor* ce)
+{
+	int index = -1;
+
+	for (unsigned int i = 0; i < codeEditors.size(); i++)
+		if (codeEditors[i] == ce)
+			index = i;
+
+	if (index != -1)
+	{
+		delete(codeEditors[index]);
+		codeEditors.erase(codeEditors.begin() + index);
+	}
+}
+
+m3dCI::CommandLister* ObjectManager::CreateCommandLister()
+{
+	m3dCI::CommandLister* cl = new m3dCI::CommandLister();
+
+	commandListers.push_back(cl);
+
+	return cl;
+}
+
+void ObjectManager::DeleteCommandLister(m3dCI::CommandLister* cl)
+{
+	int index = -1;
+
+	for (unsigned int i = 0; i < commandListers.size(); i++)
+		if (commandListers[i] == cl)
+			index = i;
+
+	if (index != -1)
+	{
+		delete(commandListers[index]);
+		commandListers.erase(commandListers.begin() + index);
+	}
 }
