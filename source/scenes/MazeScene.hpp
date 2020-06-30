@@ -145,8 +145,8 @@ class MazeScene : public Minigame
 							new DownCommand("5"),
 							new LeftCommand("18"),
 							new DownCommand("5"),
-							new UpCommand("5")
-							//new RightCommand("18")
+							new UpCommand("5"),
+							new RightCommand("18")
 						};
 
 						MenuHandler::RequestUserCode(startingCommands, [&](std::vector<CommandObject*> commands) { SubmitMazeCode(commands); });
