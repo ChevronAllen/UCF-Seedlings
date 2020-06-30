@@ -18,6 +18,7 @@ class MazeScene : public Minigame
 		m3d::Color *colorRec;
 		m3d::Color *colorText;
 		m3d::Text *prompt;
+		m3dCI::Text *winPrompt;
         TerminalObject *runner;
 		int x, y, runnerID;
         bool walls[12][20] ={{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -80,6 +81,10 @@ class MazeScene : public Minigame
 			winScreen = new m3d::Rectangle(0,0,320,240,*colorRec);
 			prompt = new m3d::Text("Maze",*colorText);
 			prompt->setPosition(160,120);
+
+			winPrompt = new m3dCI:Text("You Win!", *colorText);
+			winPrompt->setPosition(160,120);
+
 			wallpaper   = new m3dCI::Sprite(*(ResourceManager::getSprite("maze1.png")));
             //  Initialize popup BG
             popup       = new m3dCI::Sprite(*(ResourceManager::getSprite("menu_popup.png")));
@@ -87,8 +92,6 @@ class MazeScene : public Minigame
 		    //wallpaper->setTexture(*texture);
 		    wallpaper->setCenter(0,0);
 		    wallpaper->setScale(1,1);
-
-
 
 			currentState = MazeState::TutorialMessage;
 		}
@@ -103,6 +106,12 @@ class MazeScene : public Minigame
             {   
                 screen->drawTop(*popup);
             }
+
+			if(currentState == MazeState::Win)
+			{
+				screen->drawTop(*popup);
+				screen->drawTop(*winPrompt);
+			}
 
 			//screen->drawBottom(*bwallpaper);
 			//screen->drawBottom(*prompt);
@@ -146,6 +155,7 @@ class MazeScene : public Minigame
 				case MazeState::Execute:
 					break;
 				case MazeState::Win:
+				//
 					break;
 				case MazeState::Lose:
 					break;
