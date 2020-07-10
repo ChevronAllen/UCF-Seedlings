@@ -19,3 +19,9 @@ function IsRunning()
     end
     return true
 end
+function create_gameobject(_id,_type)
+    return {
+        id = _id,
+        type = _type
+    }
+end

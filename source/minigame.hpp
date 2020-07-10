@@ -11,10 +11,6 @@
 
 #define DEBUG
 
-#define THREAD_HALT     1
-#define THREAD_RUNNING  0
-#define THREAD_CLOSE   -1
-
 #define setObjectName(name, id) executeInSandbox("name_table[\"" name "\"] = " + std::to_string(id))
 
 class Minigame : public Scene
@@ -24,7 +20,7 @@ class Minigame : public Scene
         m3d::Mutex  m_mutex_execution, m_mutex_sandbox, m_mutex_threadState, m_mutex_lua;
         int m_sandboxThreadState = THREAD_RUNNING;
         std::string* m_luaChunk = nullptr;
-        LuaSandbox* m_sandbox = nullptr;
+        //LuaSandbox* m_sandbox = nullptr;
 
         /**
          * @brief Sandbox thread's main  function.
@@ -36,7 +32,7 @@ class Minigame : public Scene
             m_mutex_sandbox.lock();
             //Util::PrintLine("sandbox: start sandbox thread");
             
-            m_sandbox = new LuaSandbox();
+            //m_sandbox = new LuaSandbox();
             int* state = param.get<int*>();
             if(state == NULL)
             {
@@ -70,7 +66,7 @@ class Minigame : public Scene
                     #endif
                     
                     m3d::Lock lock_sandbox(m_mutex_sandbox);
-                    m_sandbox->executeString(t_lua);
+                    //m_sandbox->executeString(t_lua);
                     m_luaChunk = nullptr;
                     lock_sandbox.~Lock();
 
@@ -125,7 +121,7 @@ class Minigame : public Scene
             m_sandboxThreadState = state;
             lock_state.~Lock();
 
-            m_sandbox->executeString("_EXEC_STATE = " + std::to_string(state));
+            //m_sandbox->executeString("_EXEC_STATE = " + std::to_string(state));
         }
 
         /**

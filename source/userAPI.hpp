@@ -9,10 +9,10 @@
 
 #include <3ds.h>
 #include <m3dia.hpp>
-
 #include "lua/lua.hpp"
-#include "util.hpp"   
+
 #include "m3diaLibCI/text.hpp"
+#include "util.hpp"   
 #include "sceneManager.hpp"
 #include "gameObjects/objects.h"
 

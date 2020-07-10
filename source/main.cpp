@@ -13,7 +13,7 @@
 #include "util.hpp"
 #include "ObjectManager.hpp"
 #include "MenuHandler.hpp"
-#include "sandbox.h"
+#include "sandbox.hpp"
 #include "resources.h"
 #include "gameManager.hpp"
 #include "sceneManager.hpp"
