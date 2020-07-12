@@ -132,17 +132,7 @@ class MazeScene : public Minigame
         
         void update()
         {
-            if (buttons::buttonPressed(buttons::X))
-            {
-                if(getThreadState() == THREAD_HALT)
-                {
-                    setThreadState(THREAD_RUNNING);
-                }else{setThreadState(THREAD_HALT);}
-            }
-            if (buttons::buttonPressed(buttons::Y))
-            {
-                setThreadState(THREAD_CLOSE);
-            }
+            
 
 			switch (currentState)
 			{
@@ -192,7 +182,7 @@ class MazeScene : public Minigame
 
 
 			//Util::getInstance()->PrintLine(str);
-			executeInSandbox(str);
+			//executeInSandbox(str);
             Util::PrintLine("done");
 
 			currentState = MazeState::Execute;
@@ -215,4 +205,6 @@ class MazeScene : public Minigame
         void loadLoseScr(){};
         void requestUI(){};
         void closeGame(){};
+        void executeBefore(){};
+        void executeAfter(){};
 };
