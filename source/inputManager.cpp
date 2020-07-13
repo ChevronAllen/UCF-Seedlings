@@ -1,5 +1,4 @@
 #include "inputManager.hpp"
-#include "util.hpp"
 
 #define MIC_BUFFER_SIZE 0x30000
 #define RECORD_BUFFER_SIZE 0x100000
@@ -28,8 +27,6 @@
 
         std::cout << "Initializing MIC...\n";
 
-		Util::PrintLine(std::to_string(*_instance->_micbuf.buffer));
-		Util::PrintLine(std::to_string(_instance->_micbuf.size));
         if(R_FAILED(micInit(_instance->_micbuf.buffer, _instance->_micbuf.size)))
         {
             _instance->_micInitialized = false;
@@ -174,20 +171,6 @@
         return volume;
 
     }
-    
-    void Input::recordMic(m3d::Parameter param)
-    {
-        double length = param.get<double>();
-        MICU_StartSampling(MICU_ENCODING_PCM16_SIGNED, MICU_SAMPLE_RATE_16360, 0, _instance->_micbuf_datasize, true);
-        
-        while(length > 0)
-        {
-            
-            length -= 0.001;
-        }
-
-        MICU_StopSampling();
-    }
 
     m3d::Vector2f Input::getTouchDragVector()
     {
@@ -251,7 +234,6 @@
 		//printf("Stoping sampling...\n");
 		if (R_FAILED(MICU_StopSampling()))
 		{
-			Util::PrintLine("failed to stop recording");
 			AudioData empty;
 			return empty;
 		}
@@ -267,11 +249,9 @@
 			//printf("Now playing.\n");
 			return true;
 		}
-		else
-		{
-			//printf("Failed to start playback.\n");
-			return false;
-		}
+
+		//printf("Failed to start playback.\n");
+		return false;
 	}
 
 	bool Input::reachedEndOfPlayback()

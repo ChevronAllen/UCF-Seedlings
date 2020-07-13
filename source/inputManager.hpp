@@ -18,6 +18,7 @@ public:
 	/**
 	 *  @brief Structure used to hold all data needed for a set of audio.
 	 *  @param psize -> Size of the audio buffer
+	 *  @param linear -> Type of memory allocation. true uses linearAlloc, false uses memalign
 	 */
 	struct AudioData
 	{
@@ -31,18 +32,16 @@ public:
 
 		}
 
-		AudioData(u32 psize)
+		AudioData(u32 psize, bool linear = false)
 		{
 			size = psize;
 			if (psize != 0x0)
-				buffer = static_cast<u8*>(memalign(0x1000,size));
-		}
-
-		AudioData(u32 psize, bool linear)
-		{
-			size = psize;
-			if (psize != 0x0)
-				buffer = static_cast<u8*>(linearAlloc(size));
+			{
+				if (linear)
+					buffer = static_cast<u8*>(linearAlloc(size));
+				else
+					buffer = static_cast<u8*>(memalign(0x1000, size));
+			}
 		}
 	};
 private:
@@ -119,20 +118,6 @@ public:
      *  @return if a touch is detected returns a vector2 with u=x,v=u. If no touch was detected both axis are < 0
      */
     static m3d::Vector2f* touch();
-
-    /**
-     *  @brief 
-     *  @param
-     *  @warning Thread
-     */
-    static void recordMic(m3d::Parameter);
-    
-    /**
-     *  Reads the last addition to the micstream; the bytes inserted since the last frame
-     *  @returns
-     */
-    static void readMic();
-
 
     /**
      *  @brief 
