@@ -35,6 +35,8 @@ int main(int argc, char* argv[])
 	SceneManager::OnInitialize();
 	SceneManager::setTransition(new MainMenuScene());
 
+	Input::AudioData ad;
+
 	// Main loop
 	while (app.isRunning())
 	{
@@ -44,6 +46,19 @@ int main(int argc, char* argv[])
 			app.exit();
 			//break;
 		}
+
+		if (m3d::buttons::buttonPressed(m3d::buttons::X) && !Input::isMicRecording())
+				Util::PrintLine("Mic start: " + std::to_string(Input::recordMic()));
+
+		if (m3d::buttons::buttonReleased(m3d::buttons::X) && Input::isMicRecording())
+		{
+			ad = Input::stopMicRecording();
+			Util::PrintLine("Mic stop: " + std::to_string(ad.buffer == nullptr?0:1));
+		}
+
+		if (m3d::buttons::buttonPressed(m3d::buttons::Y))
+			if (Input::reachedEndOfPlayback())
+				Util::PrintLine("Playback: " + std::to_string(Input::playAudio(ad)));
 
 		//  Call OnUpdate Function for all Singletons.
 		GameManager::Update();

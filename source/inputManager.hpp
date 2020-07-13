@@ -13,19 +13,46 @@
 
 class Input
 {
+public:
+
+	/**
+	 *  @brief Structure used to hold all data needed for a set of audio.
+	 *  @param psize -> Size of the audio buffer
+	 */
+	struct AudioData
+	{
+		u32 size = 0,
+			pos = 0;
+		u8* buffer = nullptr;
+
+		//default left for blank constructors
+		AudioData()
+		{
+
+		}
+
+		AudioData(u32 psize)
+		{
+			size = psize;
+			if (psize != 0x0)
+				buffer = static_cast<u8*>(memalign(0x1000,size));
+		}
+
+		AudioData(u32 psize, bool linear)
+		{
+			size = psize;
+			if (psize != 0x0)
+				buffer = static_cast<u8*>(linearAlloc(size));
+		}
+	};
 private:
 
     bool _micInitialized;
-
     
-    u32 _micbuf_size;
-    u32 _micbuf_pos; 
-    u8* _micbuf;
+	AudioData _micbuf;
+	AudioData _recordingbuf;
 
     u32 _micbuf_datasize;
-    u32 _audiobuf_size;
-    u32 _audiobuf_pos;
-    u8* _audiobuf;
 
     m3d::Vector2f* _touchStates[2];
     m3d::Vector2f _touchDragDistance;
@@ -135,7 +162,35 @@ public:
      *  @returns if touch is dragging, returns a Vector2f pointer. Otherwise returns nullptr.
      */
     static m3d::Vector2f* getTouchDragOrigin();
-    
 
+	/**
+	 *  @brief Records input from the Mic until stopRecordMic() is called or the buffer limit is hit
+	 *  @returns Returns if it was able to begin recording or not
+	 */
+	static bool recordMic();
 
+	/**
+	 *  @brief Checks if the microphone data is being recorded
+	 *  @returns if the mic is being recorded
+	 */
+	static bool isMicRecording();
+
+	/**
+	 *  @brief Ends the microphone recording if one was active
+	 *  @returns the captured audio from the recording
+	 */
+	static AudioData stopMicRecording();
+
+	/**
+	 *  @brief Plays the entire Microphone Recoring back
+     *  @param data -> The audio track to play
+	 *  @returns if it was successfully able to start the audio playback.
+	 */
+	static bool playAudio(AudioData data);
+
+	/**
+	 *  @brief Detects the end of a audio track
+	 *  @returns if the current playback has completed (true) or if there is more in the buffer (false)
+	 */
+	static bool reachedEndOfPlayback();
 };

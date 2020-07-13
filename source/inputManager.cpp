@@ -1,4 +1,8 @@
 #include "inputManager.hpp"
+#include "util.hpp"
+
+#define MIC_BUFFER_SIZE 0x30000
+#define RECORD_BUFFER_SIZE 0x100000
 
     Input* Input::_instance = nullptr;
     
@@ -13,9 +17,7 @@
         HIDUSER_EnableAccelerometer();      //  Enable Accellerometer
 
         // Microphone Stream
-        _instance->_micbuf_size = 0x30000;
-        _instance->_micbuf_pos = 0; 
-        _instance->_micbuf = static_cast<u8*>(memalign(0x1000, _instance->_micbuf_size));
+		_instance->_micbuf = AudioData(MIC_BUFFER_SIZE);
 
         std::cout << "Initializing CSND...\n";
         if(R_FAILED(csndInit()))
@@ -25,21 +27,20 @@
         } else std::cout << "CSND initialized.\n";
 
         std::cout << "Initializing MIC...\n";
-        
-        if(R_FAILED(micInit(_instance->_micbuf, _instance->_micbuf_size)))
+
+		Util::PrintLine(std::to_string(*_instance->_micbuf.buffer));
+		Util::PrintLine(std::to_string(_instance->_micbuf.size));
+        if(R_FAILED(micInit(_instance->_micbuf.buffer, _instance->_micbuf.size)))
         {
             _instance->_micInitialized = false;
             std::cout << "Could not initialize MIC.\n";
         } else std::cout << "MIC initialized.\n";
         
         _instance->_micbuf_datasize = micGetSampleDataSize();
-        _instance->_audiobuf_size = 0x100000;
-        _instance->_audiobuf_pos = 0;
-        _instance->_audiobuf = static_cast<u8*>(linearAlloc(_instance->_audiobuf_size));
+		_instance->_recordingbuf = AudioData(RECORD_BUFFER_SIZE, true);
 
         _instance->_touchStates[0] = nullptr; 
         _instance->_touchStates[1] = nullptr; 
-        
     }
 
     void Input::update()
@@ -94,6 +95,17 @@
             _instance->_touchIsDragging = false;
         }
         
+		if (isMicRecording())
+		{
+			u32 micbuf_readpos = _instance->_micbuf.pos;
+			_instance->_micbuf.pos = micGetLastSampleOffset();
+			while (_instance->_recordingbuf.pos < _instance->_recordingbuf.size && micbuf_readpos != _instance->_micbuf.pos)
+			{
+				_instance->_recordingbuf.buffer[_instance->_recordingbuf.pos] = _instance->_micbuf.buffer[micbuf_readpos];
+				_instance->_recordingbuf.pos++;
+				micbuf_readpos = (micbuf_readpos + 1) % _instance->_micbuf_datasize;
+			}
+		}
     }
     
     bool Input::btn(m3d::buttons::Button b) { return m3d::buttons::buttonDown(b); }
@@ -204,3 +216,65 @@
 
         return origin;
     }
+	
+	bool Input::recordMic()
+	{
+		if (isMicRecording())
+			return true;
+
+		_instance->_recordingbuf.pos = 0;
+		_instance->_micbuf.pos = 0;
+
+		//Util::PrintLine("Stopping audio playback...\n");
+		CSND_SetPlayState(0x8, 0);
+		if (R_FAILED(CSND_UpdateInfo(0)))
+		{
+			//printf("Failed to stop audio playback.\n");
+		}
+
+		//printf("Starting sampling...\n");
+		if (R_SUCCEEDED(MICU_StartSampling(MICU_ENCODING_PCM16_SIGNED, MICU_SAMPLE_RATE_16360, 0, _instance->_micbuf_datasize, true)))
+			return true;
+
+		return false;
+	}
+
+	bool Input::isMicRecording()
+	{
+		bool state = false;
+		MICU_IsSampling(&state);
+		return state;
+	}
+
+	Input::AudioData Input::stopMicRecording()
+	{
+		//printf("Stoping sampling...\n");
+		if (R_FAILED(MICU_StopSampling()))
+		{
+			Util::PrintLine("failed to stop recording");
+			AudioData empty;
+			return empty;
+		}
+
+		return _instance->_recordingbuf;
+	}
+
+	bool Input::playAudio(AudioData data)
+	{
+		//printf("Starting audio playback...\n");
+		if (R_SUCCEEDED(GSPGPU_FlushDataCache(data.buffer, data.pos)) && R_SUCCEEDED(csndPlaySound(0x8, SOUND_ONE_SHOT | SOUND_FORMAT_16BIT, 16360, 1.0, 0.0, (u32*)data.buffer, NULL, data.pos)))
+		{
+			//printf("Now playing.\n");
+			return true;
+		}
+		else
+		{
+			//printf("Failed to start playback.\n");
+			return false;
+		}
+	}
+
+	bool Input::reachedEndOfPlayback()
+	{
+		return _instance->_recordingbuf.pos < _instance->_recordingbuf.size;
+	}
