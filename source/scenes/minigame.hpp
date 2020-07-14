@@ -17,6 +17,7 @@
 #include "../resources.h"
 #include "../scenes/scene.hpp"
 #include "../sandbox.hpp"
+#include "../modules/modules.h"
 
 
 #ifdef DEBUG

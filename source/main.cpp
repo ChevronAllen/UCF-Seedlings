@@ -46,13 +46,20 @@ int main(int argc, char* argv[])
 		}
 
 		//  Call OnUpdate Function for all Singletons.
-		GameManager::Update();
 		Input::update();
-
+		GameManager::Update();
 		util->OnUpdate();
-		SceneManager::OnUpdate();
+
+        // API, Keyboard break
+        if(GameManager::GetModule() == nullptr)
+        {
+            // Update current scene
+            SceneManager::OnUpdate();
+        }
 		
+        //  Draws
 		SceneManager::OnDraw();
+        GameManager::Draw();
 		util->OnDraw();
 
 		scr.render();

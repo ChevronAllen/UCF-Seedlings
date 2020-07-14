@@ -11,13 +11,14 @@
 #define TOUCH_SAMPLES 10
 #define TOUCH_EPSILON 5
 
+
 class Input
 {
 private:
 
+    // Microphone
     bool _micInitialized;
 
-    
     u32 _micbuf_size;
     u32 _micbuf_pos; 
     u8* _micbuf;
@@ -27,6 +28,10 @@ private:
     u32 _audiobuf_pos;
     u8* _audiobuf;
 
+    // Camera
+    u8 * m_cameraBuffer;
+
+    // Touch
     m3d::Vector2f* _touchStates[2];
     m3d::Vector2f _touchDragDistance;
     bool _touchIsDragging;
@@ -135,6 +140,10 @@ public:
      *  @returns if touch is dragging, returns a Vector2f pointer. Otherwise returns nullptr.
      */
     static m3d::Vector2f* getTouchDragOrigin();
+
+    static void beginCamera();
+    static void endCamera();
+    static void activeCamera();
     
 
 

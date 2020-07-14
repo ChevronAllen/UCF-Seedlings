@@ -1,10 +1,17 @@
 #pragma once
+#include <math.h>
 #include "time.h"
 
 #include <3ds.h>
 #include <m3dia.hpp>
 
 #include "scenes/scene.hpp"
+#include "modules/modules.h"
+#include "util.hpp"
+
+#define GAMESTATE_DEFAULT 0x1
+#define GAMESTATE_MIC 0x2
+#define GAMESTATE_CAMERA 0x4
 
 
 
@@ -20,10 +27,10 @@ private:
     time_t curTime;
     double deltaTime;
 
+    Module *m_module = nullptr;
+
     GameManager()
     {
-        //applet = new m3d::Applet();
-        //screen = new m3d::Screen(false);
         lastTime = curTime = time(NULL);
         deltaTime = 0;
     }
@@ -35,11 +42,6 @@ private:
 
     static GameManager* getInstance()
     {
-        /*
-        if(instance == NULL){
-            Initialize();
-        }
-        */
         return instance;
     }
 
@@ -50,6 +52,8 @@ public:
 
     static void Initialize(m3d::Applet*, m3d::Screen*);
     static void Update();
+    static void Draw();
+
     static double getDeltaTime()
     {
         return (1.0/60.0) ;
@@ -58,6 +62,8 @@ public:
     static m3d::Applet* getApplet(){ return applet;}
     static m3d::Screen* getScreen(){ return screen;}
 
-    
+    static void SetModule( Module *t_module);
+    static Module* GetModule(){return instance->m_module;}
+    static bool IsModuleRunning() {return instance->m_module != nullptr;}
 
 };

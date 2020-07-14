@@ -60,6 +60,7 @@ Minigame::~Minigame()
 
 void Minigame::update()
 {
+    /*
     #ifdef DEBUG_THREAD
 	if (buttons::buttonPressed(buttons::X))
 	{
@@ -80,7 +81,13 @@ void Minigame::update()
 
 	}
     #endif
-    
+    */
+    if (m3d::buttons::buttonPressed(m3d::buttons::X))
+	{
+        Util::PrintLine("Set Module");
+        GameManager::SetModule(new CameraModule([](m3dCI::Sprite* spr){ Util::PrintLine("test"); }) );
+    }
+
 	m3d::Screen * scr = GameManager::getScreen();
 	
 	if (commandEditor != nullptr && showCommandEditor)

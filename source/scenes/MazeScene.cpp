@@ -100,7 +100,7 @@ void MazeScene::update()
 	switch (currentState)
 	{
 		case MazeState::TutorialMessage:
-
+            
 			if (buttons::buttonDown(buttons::Start))
 			{
 				currentState = MazeState::Requesting;
