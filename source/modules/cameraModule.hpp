@@ -8,7 +8,7 @@
 class CameraModule : public Module
 {
 public:
-    CameraModule(std::function<void(m3dCI::Sprite*)> callback);
+    CameraModule(std::function<void(m3dCI::Sprite*)> t_callback);
     ~CameraModule();
     void onDraw();
 
@@ -17,8 +17,17 @@ protected:
     void During();
 
 private:
-    u8 * m_buffer;
     const int SCREEN_WIDTH = 400;
     const int SCREEN_HEIGHT = 240;
+    const int SCREEN_SIZE = SCREEN_WIDTH * SCREEN_HEIGHT * 2;
+    
+    u8 * m_buffer;
+    u32 m_bufferSize;
+    unsigned int m_camHandle;
+    Handle m_camReceiveEvent = 0;
+    std::function<void(m3dCI::Sprite*)> m_callback;
+	
+
+
     void writePictureToFramebufferRGB565(void *fb, void *img, u16 x, u16 y, u16 width, u16 height);
 };

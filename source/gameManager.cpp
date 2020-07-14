@@ -42,7 +42,7 @@ void GameManager::Update()
 
     if(instance->m_module != nullptr)
     {
-        Util::PrintLine("gameManager: update module");
+        //Util::PrintLine("gameManager: update module");
         instance->m_module->onUpdate();
         if(instance->m_module->isFinished())
         {

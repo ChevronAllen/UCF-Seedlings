@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 		util->OnUpdate();
 
         // API, Keyboard break
-        if(GameManager::GetModule() == nullptr)
+        if(!GameManager::IsModuleRunning())
         {
             // Update current scene
             SceneManager::OnUpdate();
@@ -59,6 +59,7 @@ int main(int argc, char* argv[])
 		
         //  Draws
 		SceneManager::OnDraw();
+        
         GameManager::Draw();
 		util->OnDraw();
 
