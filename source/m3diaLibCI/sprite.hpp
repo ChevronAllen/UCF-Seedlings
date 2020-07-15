@@ -6,6 +6,7 @@
 #include <citro2d.h>
 #include <m3dia.hpp>
 
+
 namespace m3dCI {
     /**
      * @brief A sprite, which can be used to draw textures
@@ -273,5 +274,7 @@ namespace m3dCI {
         m3d::Color m_tintColor;
         C2D_ImageTint m_imageTint;
         C2D_SpriteSheet m_spriteSheet;
+
+        
     };
 } /* m3d */

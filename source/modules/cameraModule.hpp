@@ -1,8 +1,11 @@
 #pragma once
+#include <sstream>
 #include "3ds.h"
 #include <m3dia.hpp>
+#include <png.h>
 #include "../modules/module.hpp"
 #include "../m3diaLibCI/sprite.hpp"
+#include "../m3diaLibCI/texture.hpp"
 #include "../util.hpp"
 
 class CameraModule : public Module
@@ -27,7 +30,11 @@ private:
     Handle m_camReceiveEvent = 0;
     std::function<void(m3dCI::Sprite*)> m_callback;
 	
+    C2D_Image m_image;
+
+    C3D_Tex m_tex;
 
 
     void writePictureToFramebufferRGB565(void *fb, void *img, u16 x, u16 y, u16 width, u16 height);
+    bool loadPng(const void* t_fp, bool t_buffer);
 };
