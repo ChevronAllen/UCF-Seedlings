@@ -16,8 +16,8 @@ public:
     void onDraw();
 
 protected:
-    void Before();
-    void During();
+    void initialize();
+    void updateActions();
 
 private:
     const int SCREEN_WIDTH = 400;

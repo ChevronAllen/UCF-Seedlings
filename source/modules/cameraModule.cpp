@@ -14,7 +14,7 @@ CameraModule::~CameraModule()
 	CAMU_Activate(SELECT_NONE);
 }
 
-void CameraModule::Before()
+void CameraModule::initialize()
 {
     Util::PrintLine("Initializing camera");
     m_camHandle = (unsigned int) camInit();
@@ -55,7 +55,7 @@ void CameraModule::Before()
     m_buffer = static_cast<u8*>(calloc(m_bufferSize, sizeof(u8)));
 }
 
-void CameraModule::During()
+void CameraModule::updateActions()
 {
     //Util::PrintLine("cameraModule: update");
     //Util::PrintLine("CAMU_ClearBuffer: " + std::to_string((unsigned int) CAMU_ClearBuffer(PORT_CAM1)));
