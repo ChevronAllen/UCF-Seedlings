@@ -57,14 +57,8 @@ void CameraModule::initialize()
 
 void CameraModule::updateActions()
 {
-    //Util::PrintLine("cameraModule: update");
-    //Util::PrintLine("CAMU_ClearBuffer: " + std::to_string((unsigned int) CAMU_ClearBuffer(PORT_CAM1)));
-    //Util::PrintLine("CAMU_SetReceiving: " + std::to_string( (unsigned int) CAMU_SetReceiving(&m_camReceiveEvent, m_buffer, PORT_CAM1, SCREEN_SIZE, (s16) m_bufferSize)));
-    //CAMU_SetReceiving(&camReceiveEvent2, buf + SCREEN_SIZE, PORT_CAM2, SCREEN_SIZE, (s16) m_bufferSize);
-
-    //Util::PrintLine("svcWaitSynchronization: " + std::to_string((unsigned int) svcWaitSynchronization(m_camReceiveEvent, 300000000ULL)));
-    //svcWaitSynchronization(camReceiveEvent2, WAIT_TIMEOUT);
-
+    
+    //  Capture the state of the buffer
     if(m3d::buttons::buttonPressed(m3d::buttons::Y))
     {
         //C2D_SpriteSheetLoadFromMem()
@@ -76,8 +70,6 @@ void CameraModule::updateActions()
         Util::PrintLine(str.str());
         m_finished = true;
     }
-
-
 }
 
 void CameraModule::onDraw()
@@ -105,116 +97,4 @@ void CameraModule::writePictureToFramebufferRGB565(void *fb, void *img, u16 x, u
 		}
 	}
 }
-
-/*
-bool CameraModule::loadPng(const void* t_fp, bool t_buffer = true) {
-    m3dCI::Texture tex; 
-    png_structp png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL); 
-
-    png_infop info = png_create_info_struct(png);
-
-    if(setjmp(png_jmpbuf(png)))
-    {
-        png_destroy_read_struct(&png, &info, NULL);
-        return false;
-    }
-
-    if (t_buffer) {
-        png_set_read_fn(png, (png_voidp) t_fp,
-                        [](png_structp ptr, png_bytep data, png_size_t len) {
-                            unsigned int* addr = (unsigned int*) png_get_io_ptr(ptr);
-                            memcpy(data, (void*) *addr, len);
-                            *addr += len;
-                        });
-    } else {
-        png_set_read_fn(png, (png_voidp) t_fp,
-                        [](png_structp ptr, png_bytep data, png_size_t len) {
-                            fread(data, 1, len, (FILE*) png_get_io_ptr(ptr));
-                        });
-    }
-
-    png_read_info(png, info);
-    
-    tex.m_width = png_get_image_width(png, info);
-    tex.m_height = png_get_image_height(png, info);
-
-    png_byte color_type = png_get_color_type(png, info);
-    png_byte bit_depth  = png_get_bit_depth(png, info);
-
-    // Read any color_type into 8bit depth, ABGR format.
-    // See http://www.libpng.org/pub/png/libpng-manual.txt
-
-    if(bit_depth == 16)
-        png_set_strip_16(png);
-
-    if(color_type == PNG_COLOR_TYPE_PALETTE)
-        png_set_palette_to_rgb(png);
-
-    // PNG_COLOR_TYPE_GRAY_ALPHA is always 8 or 16bit depth.
-    if(color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8)
-        png_set_expand_gray_1_2_4_to_8(png);
-
-    if(png_get_valid(png, info, PNG_INFO_tRNS))
-        png_set_tRNS_to_alpha(png);
-
-    // if color_type doesn't have an alpha channel, fill it with 0xff.
-    if(color_type == PNG_COLOR_TYPE_RGB ||
-        color_type == PNG_COLOR_TYPE_GRAY ||
-        color_type == PNG_COLOR_TYPE_PALETTE)
-        png_set_filler(png, 0xFF, PNG_FILLER_AFTER);
-
-    if(color_type == PNG_COLOR_TYPE_GRAY ||
-        color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
-        png_set_gray_to_rgb(png);
-
-    // output ABGR
-    png_set_bgr(png);
-    png_set_swap_alpha(png);
-
-    png_read_update_info(png, info);
-
-    png_bytep* row_pointers = static_cast<png_byte**>(malloc(sizeof(png_bytep) * tex.m_height));
-    for(int y = 0; y < tex.m_height; y++) {
-        row_pointers[y] = (png_byte*)malloc(png_get_rowbytes(png,info));
-    }
-
-    png_read_image(png, row_pointers);
-
-    if (!t_buffer) fclose((FILE*) t_fp);
-    png_destroy_read_struct(&png, &info, NULL);
-
-    //unloadImage(m_image);
-    if (m_image.tex) C3D_TexDelete(m_image.tex);
-
-    tex.m_texture = static_cast<C3D_Tex*>(malloc(sizeof(C3D_Tex)));
-    tex.m_image.tex = tex.m_texture;
-    tex.m_subtexture.width = tex.m_width;
-    tex.m_subtexture.height = tex.m_height;
-    tex.m_subtexture.left = 0.0f;
-    tex.m_subtexture.top = 1.0f;
-    tex.m_subtexture.right = tex.m_width / (float) m3dCI::Texture::getNextPow2(tex.m_width);
-    tex.m_subtexture.bottom = 1.0 - (tex.m_height / (float) m3dCI::Texture::getNextPow2(tex.m_height));
-    tex.m_image.subtex = &tex.m_subtexture;
-
-    C3D_TexInit(tex.m_image.tex, m3dCI::Texture::getNextPow2(tex.m_width), m3dCI::Texture::getNextPow2(tex.m_height), GPU_RGBA8);
-
-    memset(tex.m_image.tex->data, 0, tex.m_image.tex->size);
-
-    for(int j = 0; j < tex.m_height; j++) {
-        png_bytep row = row_pointers[j];
-        for(int i = 0; i < tex.m_width; i++) {
-            png_bytep px = &(row[i * 4]);
-            u32 dst = ((((j >> 3) * (m3dCI::Texture::getNextPow2(tex.m_height) >> 3) + (i >> 3)) << 6) + ((i & 1) | ((j & 1) << 1) | ((i & 2) << 1) | ((j & 2) << 2) | ((i & 4) << 2) | ((j & 4) << 3))) * 4;
-
-            memcpy(static_cast<char*>(tex.m_image.tex->data) + dst, px, sizeof(u32)); 
-        }
-    }
-
-    // C3D_TexSetFilter(m_texture, GPU_LINEAR, GPU_LINEAR);
-    C3D_TexSetWrap(tex.m_image.tex, GPU_CLAMP_TO_BORDER, GPU_CLAMP_TO_BORDER);
-    tex.m_image.tex->border = 0xFFFFFFFF;
-
-    return true;
-}
-*/
 
