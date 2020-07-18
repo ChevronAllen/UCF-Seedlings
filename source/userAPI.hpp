@@ -21,8 +21,9 @@
 #endif
 
 #define STEP_TIME 150
+#define STR_LEN 255
 
-/**
+/** UserAPI
  *  A namespace defining the functions bound to a Lua Sandbox
  *  Any function to become a user functions must be a C Closure, returning an int and accepting a lua_State*.
  *  enabled functions must be added to the enabledFunctions array manually
@@ -31,7 +32,8 @@ namespace UserAPI
 {
     //========== Core API
 
-    /**
+ 
+ /** Print Line API Function
      *  @brief User API function, prints a string to the console inserting a new-line after
      *  The function will convert a parameter on top of the stack into a string.
      *  called with one parameter.
@@ -42,7 +44,7 @@ namespace UserAPI
     
 
     /**
-     *  @brief User API function, prints a string to the console/
+     *  @brief prints a string to the console.
      *  The function will convert a parameter on top of the stack into a string.
      *  called with one parameter.
      *  @param L lua state object
@@ -54,11 +56,32 @@ namespace UserAPI
 
     //========== Object API
 
-
+    /**
+     *  @brief Creates a rectange in the current scene
+     *  Reads in two Lua parameters: x, y. These two values are passed to the RectangleObject Constructor
+     *  @see RectangleObject
+     *  @param L lua state object
+     *  @returns 0 on success, 1 if the stack is empty
+     */
     int make_rectangle(lua_State* L);  
+    /**
+     *  @brief Creates a circle in the current scene
+     *  Reads in two Lua parameters: x, y. These two values are passed to the CircleObject Constructor
+     *  @see RectangleObject
+     *  @param L lua state object
+     *  @returns 0 on success, 1 if the stack is empty
+     */
     int make_circle(lua_State* L);  
+    int make_text(lua_State* L);
     int make_paddle(lua_State* L); 
 
+    /**
+     *  @brief Moves an object within the current scene
+     *  Reads in three Lua parameters: x, y, id. Moves the gameobject associated with the id a number of units, sleeping the current thread between each step
+     *  @see STEP_TIME
+     *  @param L lua state object
+     *  @returns 0 on success, 1 on error.
+     */
     int move_object(lua_State* L);   
     int set_position(lua_State* L);
     int get_x_position(lua_State* L);   
@@ -70,10 +93,13 @@ namespace UserAPI
 
     int scale(lua_State* L);    
     int set_scale(lua_State* L);    
+    int get_x_scale(lua_State* L);    
+    int get_y_scale(lua_State* L);    
       
     int set_color(lua_State* L);   
     
-    int delete_object(lua_State* L);   
+    int delete_object(lua_State* L);  
+    int change_color(lua_State* L);
 
     //========== Hardware API
 

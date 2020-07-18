@@ -73,8 +73,8 @@ int UserAPI::move_object(lua_State* L)
 
 int UserAPI::make_rectangle(lua_State* L)
 {
-    lua_Number x = lua_tonumber(L,-1);
-    lua_Number y = lua_tonumber(L,-2);
+    lua_Number x = lua_tonumber(L,-2);
+    lua_Number y = lua_tonumber(L,-1);
 
     Scene* scene = SceneManager::getScene();
     if(scene == nullptr)
@@ -83,21 +83,23 @@ int UserAPI::make_rectangle(lua_State* L)
         return 0;
     }
 
-    int t_id = scene->addObject( new RectangleObject());
-    if(t_id == 0)
+    int t_id = scene->addObject( new RectangleObject( x, y, DEFAULT_SIZE, DEFAULT_SIZE, 0, DEFAULT_COLOR) );
+    if(t_id == 0) 
     {
         Util::PrintLine("Error: could not create Rectangle Object in Scene \'" + scene->getSceneName() + "\'");
         return 0;
     }
     
     lua_pushinteger(L,t_id);
+    lua_setglobal(L,"current_object");
+    lua_pushinteger(L,t_id);
     return 1;
 }
 
 int UserAPI::make_circle(lua_State* L) 
 {
-    lua_Number x = lua_tonumber(L,-1);
-    lua_Number y = lua_tonumber(L,-2);
+    lua_Number x = lua_tonumber(L,-2);
+    lua_Number y = lua_tonumber(L,-1);
 
     Scene *currScene = SceneManager::getScene();
     if(currScene == nullptr)
@@ -106,7 +108,7 @@ int UserAPI::make_circle(lua_State* L)
         return 0;
     }
 
-    int t_id = currScene->addObject(new CircleObject()); 
+    int t_id = currScene->addObject(new CircleObject(x,y,(DEFAULT_SIZE/2),0,DEFAULT_COLOR)); 
     if(t_id == 0)
     {
         Util::PrintLine("Error: could not create Circle Object in Scene \'" + currScene->getSceneName() + "\'");
@@ -114,6 +116,38 @@ int UserAPI::make_circle(lua_State* L)
     }
     
     lua_pushinteger(L,t_id);
+    lua_setglobal(L,"current_object");
+    lua_pushinteger(L,t_id);
+    return 1;
+}
+
+int UserAPI::make_text(lua_State* L)
+{
+    lua_Number x = lua_tonumber(L,-3);
+    lua_Number y = lua_tonumber(L,-2);
+    std::string text = lua_tostring(L,-1);
+
+    Util::PrintLine("test 1");
+    Scene *currScene = SceneManager::getScene();
+    if(currScene == nullptr)
+    {
+        Util::PrintLine("Error: no current scene");
+        return 0;
+    }
+    Util::PrintLine("test 2");
+    //int t_id = currScene->addObject( new TextObject("TEXT",0,0) ); 
+    int t_id = currScene->addObject(new RectangleObject(0,0)); 
+    if(t_id < 0)
+    {
+        Util::PrintLine("Error: could not create Text Object in Scene \'" + currScene->getSceneName() + "\'");
+        return 0;
+    }
+    
+    Util::PrintLine("test 3");
+    lua_pushinteger(L,t_id);
+    lua_setglobal(L,"current_object");
+    lua_pushinteger(L,t_id);
+    
     return 1;
 }
 
@@ -165,7 +199,6 @@ int UserAPI::get_x_position(lua_State* L)
         Util::PrintLine("Error: could not get specified object " + std::to_string( t_id ) +" in Scene" + currScene->getSceneName() + " \n");
         return 0;
     }
-    //m3d::Vector2f *currentVector = currObj->getPosition();
 
     lua_pushnumber(L, currObj->getPosition().u);
     return 1;
@@ -188,13 +221,10 @@ int UserAPI::get_y_position(lua_State* L)
         Util::PrintLine("Error: could not get specified object " + std::to_string( t_id) +" in Scene" + currScene->getSceneName() + " \n");
         return 0;
     }
-    //m3d::Vector2f *currentVector = currObj->getPosition();
-
     lua_pushnumber(L,currObj->getPosition().v);
     return 1;
 }
    
-
 int UserAPI::rotate(lua_State* L)
 {
     lua_Number t_id = lua_tonumber(L,-1);
@@ -292,7 +322,52 @@ int UserAPI::set_scale(lua_State* L)
     return 0;
 }
     
+int UserAPI::get_x_scale(lua_State* L)
+{
+    lua_Number t_id = lua_tonumber(L,-1);
+
+    Scene *currScene = SceneManager::getScene();
+    if(currScene == nullptr)
+    {
+        Util::PrintLine("Error: no current scene");
+        return 0;
+    }
+
+    GameObject *currObj = currScene->findObject(t_id);
+    if(currObj == nullptr) 
+    {
+        Util::PrintLine("Error: could not get specified object " + std::to_string( t_id) +" in Scene" + currScene->getSceneName() + " \n");
+        return 0;
+    }
+
+    lua_pushnumber(L, currObj->getScale().u);
+
+    return 1;
+}
     
+int UserAPI::get_y_scale(lua_State* L)
+{
+    lua_Number t_id = lua_tonumber(L,-1);
+
+    Scene *currScene = SceneManager::getScene();
+    if(currScene == nullptr)
+    {
+        Util::PrintLine("Error: no current scene");
+        return 0;
+    }
+
+    GameObject *currObj = currScene->findObject(t_id);
+    if(currObj == nullptr) 
+    {
+        Util::PrintLine("Error: could not get specified object " + std::to_string( t_id) +" in Scene" + currScene->getSceneName() + " \n");
+        return 0;
+    }
+
+    lua_pushnumber(L, currObj->getScale().v);
+
+    return 1;
+}
+
 int UserAPI::set_color(lua_State* L)
 {
     lua_Number t_id     = lua_tonumber(L,-1);
@@ -318,7 +393,6 @@ int UserAPI::set_color(lua_State* L)
     return 0;
 }
    
-
 int UserAPI::delete_object(lua_State* L)
 {
     lua_Number t_id = lua_tonumber(L,-1);
@@ -343,4 +417,8 @@ int UserAPI::delete_object(lua_State* L)
     return 0;
 }
  
-       
+int UserAPI::change_color(lua_State* L)
+{
+    int t_id = lua_tonumber(L,-1); 
+    return 0;
+}

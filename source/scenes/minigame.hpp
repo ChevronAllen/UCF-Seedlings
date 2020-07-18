@@ -101,7 +101,7 @@ public:
 	virtual void load() {};
 	virtual void unload() {};
 	virtual void update();
-	virtual void draw() {};
+	virtual void draw(){Scene::draw();};
 
 	virtual void onEnter() {};
 	virtual void onExit() {};

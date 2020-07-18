@@ -18,11 +18,55 @@ namespace m3dCI
 
 		pair<string, function<void()>> helper[NUM_TABS][NUM_COMMANDS_PER_TAB] =
 		{
-			{ PAIR("Circle", new CircleCommand()), PAIR("Rectangle", new RectangleCommand()), NULLPartialPAIR("Triangle"), PAIR("Text", new TextCommand("Empty")), PAIR("Select", new SelectCommand()), PAIR("Delete", new DeleteCommand), NULLPAIR, NULLPAIR },
-			{ COLORPAIR("Red", 255, 0, 0), COLORPAIR("Orange", 255, 127, 0), COLORPAIR("Yellow", 255, 255, 0), COLORPAIR("Green", 0, 255, 0), COLORPAIR("Blue", 0, 0, 255), COLORPAIR("Indigo", 75, 0, 130), COLORPAIR("Violet", 148, 0, 211), COLORPAIR("Black", 0, 0, 0) },
-			{ PAIR("Up", new UpCommand()), PAIR("Down", new DownCommand()), PAIR("Left", new LeftCommand()), PAIR("Right", new RightCommand()), PAIR("Scale", new ScaleCommand("1","1")), PAIR("Scale_X", new ScaleCommand("1", "-1")), PAIR("Scale_Y", new ScaleCommand("-1", "1")) },
-			{ PAIR("Var", new VarCommand()), PAIR("Get_X", new GetXCommand()), PAIR("Get_Y", new GetYCommand()), PAIR("Get_Angle", new GetAngleCommand()), PAIR("Set_Angle", new SetAngleCommand()), NULLPartialPAIR("Get_Scale_X"), NULLPartialPAIR("Get_Scale_Y") },
-			{ PAIR("If", new IfCommand()), NULLPartialPAIR("Loop"), PAIR("While", new WhileCommand()), PAIR("End", new EndCommand()), PAIR("Label", new LabelCommand()), PAIR("goto", new GotoCommand()), NULLPAIR, NULLPAIR }
+			{ 
+                PAIR("Circle", new CircleCommand()), 
+                PAIR("Rectangle", new RectangleCommand()), 
+                //NULLPartialPAIR("Triangle"), 
+                PAIR("Text", new TextCommand("TEXT")), 
+                PAIR("Select", new SelectCommand()), 
+                PAIR("Delete", new DeleteCommand), 
+                NULLPAIR, 
+                NULLPAIR, 
+                NULLPAIR 
+            },
+			{ 
+                COLORPAIR("Red", 255, 0, 0), 
+                COLORPAIR("Orange", 255, 127, 0), 
+                COLORPAIR("Yellow", 255, 255, 0), 
+                COLORPAIR("Green", 0, 255, 0), 
+                COLORPAIR("Blue", 0, 0, 255), 
+                COLORPAIR("Indigo", 75, 0, 130), 
+                COLORPAIR("Violet", 148, 0, 211), 
+                COLORPAIR("Black", 0, 0, 0) 
+            },
+			{ 
+                PAIR("Up", new UpCommand()), 
+                PAIR("Down", new DownCommand()), 
+                PAIR("Left", new LeftCommand()), 
+                PAIR("Right", new RightCommand()), 
+                PAIR("Scale", new ScaleCommand("1","1")), 
+                PAIR("Scale_X", new ScaleCommand("1", "-1")), 
+                PAIR("Scale_Y", new ScaleCommand("-1", "1")) 
+            },
+			{ 
+                PAIR("Var", new VarCommand()), 
+                PAIR("Get_X", new GetXCommand()), 
+                PAIR("Get_Y", new GetYCommand()), 
+                PAIR("Get_Angle", new GetAngleCommand()), 
+                PAIR("Set_Angle", new SetAngleCommand()), 
+                PAIR("Get_Scale_X", new Get_ScaleXCommand()), 
+                PAIR("Get_Scale_Y", new Get_ScaleYCommand()) 
+            },
+			{ 
+                PAIR("If", new IfCommand()), 
+                NULLPartialPAIR("Loop"), 
+                PAIR("While", new WhileCommand()), 
+                PAIR("End", new EndCommand()), 
+                PAIR("Label", new LabelCommand()), 
+                PAIR("Goto", new GotoCommand()), 
+                NULLPAIR, 
+                NULLPAIR 
+            }
 		};
 
 		for (int i = 0; i < NUM_TABS; i++)

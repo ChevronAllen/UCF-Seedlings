@@ -45,7 +45,17 @@ public:
     virtual void load()=0;
     virtual void unload()=0;
     virtual void update()=0;
-    virtual void draw()=0;
+    virtual void draw()
+    {
+        for (auto objPair : m_hashmap)
+        {
+            if (objPair.second != nullptr)
+            {
+                objPair.second->draw(); 
+            }
+        }
+        
+    }
 
     virtual void onEnter()=0;
 

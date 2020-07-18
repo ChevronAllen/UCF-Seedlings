@@ -6,9 +6,10 @@
 std::pair<std::string, lua_CFunction> enabledFunctions[] = {
     std::make_pair( "println" , UserAPI::print_line),
     std::make_pair( "print" , UserAPI::print),
-    std::make_pair( "rectangle" , UserAPI::make_rectangle),
-    std::make_pair( "circle" , UserAPI::make_circle),
-    std::make_pair( "triangle" , UserAPI::make_rectangle),
+    std::make_pair( "make_rectangle" , UserAPI::make_rectangle),
+    std::make_pair( "make_circle" , UserAPI::make_circle),
+    std::make_pair( "make_text" , UserAPI::make_text),
+    //std::make_pair( "make_triangle" , UserAPI::make_rectangle),
     std::make_pair( "move" , UserAPI::move_object),
     std::make_pair( "position" , UserAPI::set_position),
     std::make_pair( "get_x" , UserAPI::get_x_position),
@@ -17,6 +18,8 @@ std::pair<std::string, lua_CFunction> enabledFunctions[] = {
     std::make_pair( "set_angle" , UserAPI::set_angle),
     std::make_pair( "get_angle" , UserAPI::get_angle),
     std::make_pair( "set_scale" , UserAPI::set_scale),
+    std::make_pair( "get_x_scale", UserAPI::get_x_scale),
+    std::make_pair( "get_y_scale", UserAPI::get_y_scale),
     std::make_pair( "set_color" , UserAPI::set_color),
     std::make_pair( "delete" , UserAPI::delete_object)
 };
