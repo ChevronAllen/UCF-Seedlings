@@ -12,6 +12,7 @@
 #include "lobject.h"
 #include "ltm.h"
 #include "lzio.h"
+#include "3ds.h"
 
 
 /*
@@ -199,6 +200,7 @@ struct lua_State {
   unsigned short nCcalls;  /* number of nested C calls */
   l_signalT hookmask;
   lu_byte allowhook;
+  RecursiveLock mutex;
 };
 
 
