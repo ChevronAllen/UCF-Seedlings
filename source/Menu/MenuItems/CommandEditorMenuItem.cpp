@@ -20,9 +20,15 @@ CommandEditorMenuItem::~CommandEditorMenuItem()
 
 bool CommandEditorMenuItem::PointIntersection(int px, int py)
 {
-	return true;
 	if (px >= XStart && px <= XStart + CELL_WIDTH && py >= YStart && py <= YStart + (CELL_HEIGHT * (command->getParamNames().size() + 1)))
 		return true;
+
+	return false;
+}
+
+void CommandEditorMenuItem::SetEditFunction(std::function<void()> function)
+{
+	OnEditCommand = function;
 }
 
 void CommandEditorMenuItem::HandleClick(int x, int y)
@@ -50,13 +56,15 @@ void CommandEditorMenuItem::HandleClick(int x, int y)
 			else
 			{
 				command->setParam(selected - 1, sk.getLastInput());
-
-				isComplete = true;
+				
+				params[selected - 1]->setText(command->getParamNames()[selected -1] + ": " + command->getParams()[selected -1]);
 			}
 		}
 		else
 		{
-
+			//Edit Command
+			if (OnEditCommand != nullptr)
+				OnEditCommand();
 		}
 	}
 }

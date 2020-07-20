@@ -1,11 +1,16 @@
-
+/**
+ *  @file coreAPI.cpp
+ *  @brief Implementations for application related @ref UserAPI functions
+ */
 #include "../userAPI.hpp"
 
 
 /**
- *  User API print function, taken from the lua API implementation
- *  @brief
- *  taken from Lua API's base Library
+ *  @brief Print line to console
+ * 
+ *  Prints a list of arguments to the console via @ref Util. 
+ *  Implementation taken from Lua's own print function diverting output to Util::Print
+ *  Accepts a variable number of Lua arguments, each evaluted as an expression
  */
 int UserAPI::print_line(lua_State* L)
 {   
@@ -41,7 +46,13 @@ int UserAPI::print_line(lua_State* L)
     return 0;
 }
 
-
+/**
+ *  @brief Print to console
+ * 
+ *  Prints a list of arguments to the console via @ref Util. 
+ *  Implementation taken from Lua's own print function diverting output to Util::Print
+ *  Accepts a variable number of Lua arguments, each evaluted as an expression
+ */
 int UserAPI::print(lua_State* L)
 {    
     const char *s;

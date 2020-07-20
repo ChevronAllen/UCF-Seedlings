@@ -2,14 +2,19 @@
 #include "util.hpp"
 #include "sandbox.hpp"
 
-/**The array of lua accessible user API functions, paired with their lua global name*/
+/**
+ *  @brief enabled UserAPI functions
+ * 
+ *  The array of Lua accessible user API functions, paired with their Lua global name.
+ *  Used to initialize the LuaSandbox.
+ *  @note These functions are added as variable functionsand can be easily overwritten by assigning a new value to the global name.
+ */
 std::pair<std::string, lua_CFunction> enabledFunctions[] = {
     std::make_pair( "println" , UserAPI::print_line),
     std::make_pair( "print" , UserAPI::print),
     std::make_pair( "make_rectangle" , UserAPI::make_rectangle),
     std::make_pair( "make_circle" , UserAPI::make_circle),
     std::make_pair( "make_text" , UserAPI::make_text),
-    //std::make_pair( "make_triangle" , UserAPI::make_rectangle),
     std::make_pair( "move" , UserAPI::move_object),
     std::make_pair( "position" , UserAPI::set_position),
     std::make_pair( "get_x" , UserAPI::get_x_position),
@@ -21,6 +26,7 @@ std::pair<std::string, lua_CFunction> enabledFunctions[] = {
     std::make_pair( "get_x_scale", UserAPI::get_x_scale),
     std::make_pair( "get_y_scale", UserAPI::get_y_scale),
     std::make_pair( "set_color" , UserAPI::set_color),
+    //std::make_pair( "select" , UserAPI::select_object),
     std::make_pair( "delete" , UserAPI::delete_object)
 };
 
@@ -87,24 +93,26 @@ void LuaSandbox::sandboxRuntime(m3d::Parameter param)
 		{
 			continue;
 		}
-		// lock sandbox
+		// Unlock Thread State
 		lock_state.~Lock();
-
 
 		if (m_luaQueue.size() > 0)
 		{
 			m_execBefore();
-			//  TODO: Disable Command Menu
+			//  TODO : Disable Command Menu
             
+            // Lock lua queue access
             m3d::Lock lock_queue(m_mutex_lua);
 			std::string t_lua(m_luaQueue.front());
             m_luaQueue.pop();
+            // Unlock lua queue access
             lock_queue.~Lock();
 
             #ifdef DEBUG_SANDBOX
 			Util::PrintLine("thread: read \'"+t_lua.substr(0,30)+"\'");
             #endif
 
+            // Lock lua state access
 			m3d::Lock lock_sandbox(m_mutex_sandbox);
             if(luaL_dostring(m_luaState,t_lua.c_str()) > 0)
             {
@@ -119,6 +127,7 @@ void LuaSandbox::sandboxRuntime(m3d::Parameter param)
             }
             #endif
 			
+            // Unlock lua state access
             lock_sandbox.~Lock();
 
 			m_execAfter();
@@ -151,6 +160,7 @@ bool LuaSandbox::executeString(std::string text)
     Util::PrintLine("executing: " + text.substr(0,20) + "...");
     #endif
     const char* temp = text.c_str();    
+    m3d::Lock lock_sandbox(m_mutex_sandbox);
     return luaL_dostring(m_luaState,temp);
 }
 
@@ -332,6 +342,19 @@ void LuaSandbox::resetSandbox()
 {
     close();
     initialize();
-    
 }
 
+int LuaSandbox::getQueueSize()
+{
+    m3d::Lock lock_queue(m_mutex_lua);
+    return m_luaQueue.size();
+}
+
+void LuaSandbox::clearQueue()
+{
+    m3d::Lock lock_queue(m_mutex_lua);
+    while(!m_luaQueue.empty())
+    {
+        m_luaQueue.pop();
+    }
+}

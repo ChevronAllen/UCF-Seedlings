@@ -34,6 +34,10 @@ using namespace std;
 
 namespace m3dCI 
 {
+    /**
+     @brief A selection menu tasked with displaying all selectable Commands and giving the CodeEditor a respective CommandObject
+	 Based off of m3d::Drawable
+     */
     class CommandLister : public m3d::Drawable
 	{
 		private:
@@ -50,32 +54,72 @@ namespace m3dCI
 
 			int x, y, w, h;
 
+			/**
+				@brief Get the String for a Sprites Tab location
+				@param index Index of the Tab
+				@param selected Boolean if it should grab the Tab_Selected Sprite
+				@returns String for a Sprites Tab location
+			**/
 			std::string getTabSpriteStringID(int index, bool selected);
+			
+			/**
+				@brief Get the sprite for a Tab 
+				@param index Index of the Tab
+				@param selected Boolean if it should grab the Tab_Selected Sprite
+				@returns Sprite for the Tab
+			**/
 			m3dCI::Sprite* getTabSprite(int index, bool selected);
 
+			/**
+				@brief Create all the CommandObjects when a Tab is switched to
+				@param index Tab to switch to
+			**/
 			void CreateTabCommandObjects(int index);
 
+			/**
+				@brief Switch between Tabs
+				@param tabIndex Tab to switch to
+			**/
 			void SelectTab(int tabIndex);
 		protected:
+			/**
+				@brief Get the selected tab index
+				@returns the Selected Tab Index
+			**/
 			int getCurrentlySelectedTab();
+			
+			/**
+				@brief Determine which Tab to select based off a Touch
+				@param px X coordinate clicked
+				@param py Y coordinate clicked
+			**/
 			void SelectTab(int px, int py);
+			
+			/**
+				@brief Determine which CommandObject to select based off a Touch
+				@param px X coordinate clicked
+				@param py Y coordinate clicked
+			**/
 			void SelectCommandObject(int px, int py);
 
 		public:
-			//Create the CodeEditor.
-			/*
-			 *  @param px X Coordinate
-			 *  @param py Y Coordinate
-			 *  @param pw Width of Code Editor
-			 *  @param ph Height of Code Editor
-			 *  @param p_borderWidth Width of Border
-			 *  @returns a Code Editor drawable object
-			*/
+			/** @brief Create the CommandLister.
+			 *  @param minigame Minigame object to add the new Object to.
+				NOTE: Storing the Minigame inside the object is a poor way of doing it. 
+				Should be changed to being handled inside a MenuItem
+			**/
 			CommandLister(Minigame* minigame);
 
-			//Destructor: Objects that must be deleted when this object is deleted. Delete(nullptr) is fail-safe.
+			/**
+				@brief Deconstructor for CommandLister.
+				Responsible for deleting all needed children.
+			**/
 			virtual ~CommandLister();
 
+			/**
+				@brief Draw the CommandLister
+				@param t_context The context to draw in
+			**/
 			void draw(m3d::RenderContext t_context);
 	};
 }

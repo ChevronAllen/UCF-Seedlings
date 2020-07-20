@@ -26,7 +26,7 @@ MainMenuScene::MainMenuScene()
 
 MainMenuScene::~MainMenuScene()
 {
-	Util::PrintLine("Destroying mainmenuscene");
+	
 }
 
 void MainMenuScene::initialize()

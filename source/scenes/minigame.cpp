@@ -92,28 +92,17 @@ void Minigame::update()
 	
 	if (commandEditor != nullptr && showCommandEditor)
 	{
+		scr->drawBottom(*commandEditor);
+
 		if (commandEditor->getComplete())
 		{
-			showCommandEditor = false;
-
-			menu->RemoveItem(commandEditor);
-
-			commandLister->SetActive(false);
-			codeEditor->SetActive(true);
 			AddButton->SetActive(true);
-			EditButton->SetActive(true);
-			RemoveButton->SetActive(true);
-			submitButton->SetActive(true);
 		}
-		else
-		{
-			scr->drawBottom(*commandEditor);
 
-			if (closeButton != nullptr)
-			{
-				closeButton->setPosition(BOTTOMSCREEN_WIDTH - 37, 0);
-				scr->drawBottom(*closeButton);
-			}
+		if (closeButton != nullptr)
+		{
+			closeButton->setPosition(BOTTOMSCREEN_WIDTH - 37, 0);
+			scr->drawBottom(*closeButton);
 		}
 	}
 
@@ -121,7 +110,7 @@ void Minigame::update()
 	{
 		if (showCommandLister)
 			scr->drawTop(*codeEditor);
-		else if (!showCommandEditor)
+		else if (!showCommandEditor && !editCommandFromCommandEditor)
 		{
 			scr->drawBottom(*codeEditor);
 			AddButton->SetActive(codeEditor->canAdd());
@@ -187,7 +176,9 @@ void Minigame::SubmitButton_OnClick()
     {
         Util::PrintLine("warning: thread closed");
     }
-    #endif 
+    #endif
+
+	submitButton->SetActive(false);
 }
 
 void Minigame::EditButton_OnClick()
@@ -196,6 +187,17 @@ void Minigame::EditButton_OnClick()
 		return;
 
 	commandEditor = new CommandEditorMenuItem(codeEditor->getSelectedObject());
+	commandEditor->SetEditFunction
+	(
+		[&]()
+		{
+		editCommandFromCommandEditor = true;
+
+		CloseButton_OnClick();
+		AddButton_OnClick();
+		}
+	);
+
 	menu->AddItem(commandEditor);
 
 	commandLister->SetActive(false);
@@ -218,17 +220,43 @@ void Minigame::CloseButton_OnClick()
 {
 	m3d::Screen * scr = GameManager::getScreen();
 	if (showCommandEditor)
+	{
+		showCommandEditor = false;
+		showCommandLister = false;
+
+		menu->RemoveItem(commandEditor);
+
+		codeEditor->SetActive(true);
+		commandLister->SetActive(false);
+
+		AddButton->SetActive(false);
+		EditButton->SetActive(true);
+		RemoveButton->SetActive(true);
+		submitButton->SetActive(true);
+
 		commandEditor->ForceComplete();
+	}
 	else
 	{
 		showCommandLister = false;
 
 		commandLister->SetActive(false);
-		codeEditor->SetActive(true);
-		AddButton->SetActive(true);
-		EditButton->SetActive(true);
-		RemoveButton->SetActive(true);
-		submitButton->SetActive(true);
+
+		if (editCommandFromCommandEditor)
+		{
+			editCommandFromCommandEditor = false;
+			codeEditor->SetActive(true);
+			EditButton_OnClick();
+		}
+		else
+		{
+			codeEditor->SetActive(true);
+			AddButton->SetActive(true);
+			EditButton->SetActive(true);
+			RemoveButton->SetActive(true);
+			submitButton->SetActive(true);
+
+		}
 
 		codeEditor->ShiftToBottom();
 	}
@@ -244,7 +272,11 @@ void Minigame::AddCommand(CommandObject* command)
 {
 	m3d::Screen * scr = GameManager::getScreen();
 
-	codeEditor->addCommand(command);
+	if (editCommandFromCommandEditor)
+		codeEditor->replaceCommand(codeEditor->getSelectedObject(), command);
+	else
+		codeEditor->addCommand(command);
+
 	commandLister->SetActive(false);
 	codeEditor->SetActive(true);
 	codeEditor->ShiftToBottom();
@@ -254,7 +286,12 @@ void Minigame::AddCommand(CommandObject* command)
 	closeButton->SetActive(false);
 	submitButton->SetActive(true);
 
-	scr->clear();
+	if (editCommandFromCommandEditor)
+	{
+		editCommandFromCommandEditor = false;
+		EditButton_OnClick();
+	}
+
 
 	showCommandLister = false;
 }
@@ -267,4 +304,10 @@ void Minigame::ClearCommands()
 void Minigame::SetSubmitFunction(std::function<void(std::vector<CommandObject*>)> callbackFunction)
 {
 	submitFunction = callbackFunction;
+}
+
+void Minigame::onExecutionEnd()
+{
+	//Until a hault option is made here. We don't want the execution to run twice.
+	submitButton->SetActive(true);
 }

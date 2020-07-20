@@ -2,6 +2,9 @@
 
 #include "../commands/commands.h"
 
+#define X_NAME_SHIFT 10
+#define Y_NAME_SHIFT 19
+
 namespace m3dCI
 {
 	CommandEditor::CommandEditor(CommandObject* pcommand)
@@ -14,7 +17,7 @@ namespace m3dCI
 		background = new m3dCI::Sprite(*ResourceManager::getSprite("commandEditPopup.png"));
 
 		name = new m3dCI::Text(command->getName());
-		name->setPosition(XStart, YStart + 19);
+		name->setPosition(XStart + X_NAME_SHIFT, YStart + Y_NAME_SHIFT);
 
 		name->setColor(COM_TEXT_COLOR);
 		name->setFontWeight(1.0f);
@@ -23,7 +26,7 @@ namespace m3dCI
 		for (int i = 0; i < numParams; i++)
 		{
 			params[i] = new m3dCI::Text(command->getParamNames()[i] + ": " + command->getParams()[i]);
-			params[i]->setPosition(XStart, YStart + 19 + (CELL_HEIGHT * (i + 1)));
+			params[i]->setPosition(XStart + X_NAME_SHIFT, YStart + Y_NAME_SHIFT + (CELL_HEIGHT * (i + 1)));
 
 			params[i]->setColor(COM_TEXT_COLOR);
 			params[i]->setFontWeight(1.0f);

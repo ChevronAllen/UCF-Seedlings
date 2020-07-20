@@ -1,9 +1,15 @@
+/**
+ *  @file objectAPI.cpp
+ *  @brief Implementations for @ref GameObject related @ref UserAPI functions
+ */
 #include "../userAPI.hpp"
 
 /**
  * @brief sign function
+ * 
+ * Solution taken from <a href="https://stackoverflow.com/questions/1903954/is-there-a-standard-sign-function-signum-sgn-in-c-c">stack
+ * overflow</a>
  * @returns positive (1), negative (-1), or zero (0) depending on the value of the parameter.
- * @ref https://stackoverflow.com/questions/1903954/is-there-a-standard-sign-function-signum-sgn-in-c-c
  */
 template <typename T> int sign(T val) {
     return (T(0) < val) - (val < T(0));
@@ -156,7 +162,6 @@ int make_paddle(lua_State* L)
     return 0;
 }
   
-// TODO: Revise, no set position, only set x and y.
 int UserAPI::set_position(lua_State* L)
 {
     lua_Number t_id = lua_tonumber(L,-1);
@@ -370,11 +375,11 @@ int UserAPI::get_y_scale(lua_State* L)
 
 int UserAPI::set_color(lua_State* L)
 {
-    lua_Number t_id     = lua_tonumber(L,-1);
-    lua_Number t_red  = lua_tonumber(L,-2);
-    lua_Number t_green = lua_tonumber(L,-3);
-    lua_Number t_blue  = lua_tonumber(L,-2);
-    lua_Number t_alpha = lua_tonumber(L,-3);
+    lua_Number t_id     = lua_tonumber(L,-5);
+    lua_Number t_red    = lua_tonumber(L,-4);
+    lua_Number t_green  = lua_tonumber(L,-3);
+    lua_Number t_blue   = lua_tonumber(L,-2);
+    lua_Number t_alpha  = lua_tonumber(L,-1);
 
     Scene *currScene = SceneManager::getScene();
     if(currScene == nullptr)
@@ -389,10 +394,37 @@ int UserAPI::set_color(lua_State* L)
         Util::PrintLine("Error: could not get specified object " + std::to_string( t_id) +" in Scene" + currScene->getSceneName() + " \n");
 
     }
+
+    currObj->setColor(m3d::Color(t_red,t_green,t_blue,t_alpha));
     m3d::Thread::sleep(STEP_TIME);
     return 0;
 }
-   
+
+int UserAPI::select_object(lua_State* L)
+{
+    lua_Number t_id = lua_tonumber(L,-1);
+
+    Scene *currScene = SceneManager::getScene();
+    if(currScene == nullptr)
+    {
+        Util::PrintLine("Error: no current scene");
+        return 0;
+    }
+
+    GameObject *currObj = currScene->findObject(t_id);
+    if(currObj == nullptr) 
+    {
+        Util::PrintLine("Error: could not get specified object " + std::to_string( t_id) +" in Scene" + currScene->getSceneName() + " \n");
+
+    }
+
+    lua_pushnumber(L,t_id);
+    lua_setglobal(L,"current_object");
+
+
+    
+}
+
 int UserAPI::delete_object(lua_State* L)
 {
     lua_Number t_id = lua_tonumber(L,-1);
@@ -414,11 +446,5 @@ int UserAPI::delete_object(lua_State* L)
     currObj->destroy();
     currObj = nullptr;
     m3d::Thread::sleep(STEP_TIME);
-    return 0;
-}
- 
-int UserAPI::change_color(lua_State* L)
-{
-    int t_id = lua_tonumber(L,-1); 
     return 0;
 }

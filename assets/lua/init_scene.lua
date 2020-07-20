@@ -2,7 +2,7 @@ name_table = {}
 current_object = nil
 _lock = false
 _EXEC_STATE = 0
-function select_gameobject(name)
+function select_object(name)
     current_object = name_table[name]
 end
 function delete(name)

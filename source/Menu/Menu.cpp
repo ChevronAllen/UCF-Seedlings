@@ -18,7 +18,8 @@ Menu::~Menu()
 
 void Menu::OnUpdate()
 {
-	int touchedThisFrame = Input::btn(m3d::buttons::Touch),
+	int touchedThisFrame = Input::btnPressed(m3d::buttons::Touch),
+		touchHeldThisFrame = (!touchedThisFrame) && Input::btn(m3d::buttons::Touch),
 		touchReleasedThisFrame = Input::btnReleased(m3d::buttons::Touch),
 		touchx = m3d::touch::getXPosition(),
 		touchy = m3d::touch::getYPosition();
@@ -36,9 +37,17 @@ void Menu::OnUpdate()
 		if (touchedThisFrame && currentItem->PointIntersection(touchx, touchy))
 			currentItem->CallOnTouch(touchx, touchy);
 		else if (touchReleasedThisFrame && currentItem->PointIntersection(lastFrameTouchX, lastFrameTouchY))
+		{
+			//If an object has the click release, OnHeldLeave should also be called.
+			currentItem->CallOnHeldLeave(touchx, touchy);
 			currentItem->CallOnRelease(lastFrameTouchX, lastFrameTouchY);
-		else if (touchReleasedThisFrame && currentItem->PointIntersection(touchx, touchy))
+		}
+		else if (touchHeldThisFrame && currentItem->PointIntersection(touchx, touchy) && !currentItem->PointIntersection(lastFrameTouchX, lastFrameTouchY))
+			currentItem->CallOnHeldEnter(touchx, touchy);
+		else if (touchHeldThisFrame && currentItem->PointIntersection(touchx, touchy) && currentItem->PointIntersection(lastFrameTouchX, lastFrameTouchY))
 			currentItem->CallOnHeld(touchx, touchy);
+		else if (touchHeldThisFrame && currentItem->PointIntersection(lastFrameTouchX, lastFrameTouchY) && !currentItem->PointIntersection(touchx, touchy))
+			currentItem->CallOnHeldLeave(touchx, touchy);
 
 		if (draggedLastFrame && touchReleasedThisFrame)
 			currentItem->CallOnDragComplete();

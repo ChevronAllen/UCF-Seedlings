@@ -1,3 +1,7 @@
+/**
+ *  @file commands.h
+ *  @brief includes for CommandObject and its children
+ */
 #include "../commands/commandObject.hpp"
 #include "../commands/selectCommand.hpp"
 #include "../commands/ifCommand.hpp"

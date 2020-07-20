@@ -1,6 +1,6 @@
 /**
- *  @file This file contains the implementation for user API functions which interact with system hardware
- *  @brief Hardware interaction API functions
+ *  @file "hardwareAPI.cpp
+ *  @brief Implementations for hardware & peripheral related @ref UserAPI functions
  */
 
 #include "../userAPI.hpp"

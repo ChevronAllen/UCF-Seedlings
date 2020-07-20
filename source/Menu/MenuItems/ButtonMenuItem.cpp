@@ -6,7 +6,22 @@
 ButtonMenuItem::ButtonMenuItem(int px, int py, int pw, int ph, m3d::Color p_innerColor, m3d::Color p_borderColor, int p_borderWidth = 3)
 	: m3dCI::Button(px, py, pw, ph, p_innerColor, p_borderColor, p_borderWidth), MenuItem()
 {
+	m3d::Color iC = p_innerColor;
+	m3d::Color darker = m3d::Color((int)(iC.getRed() * 0.9f), (int)(iC.getGreen() * 0.9f), (int)(iC.getBlue() * 0.9f), iC.getAlpha());
+	SetOnTouch([&, p_innerColor, darker](int a, int b)
+	{
+		setInnerColor(darker);
+	});
+	
+	SetOnHeldEnter([&,p_innerColor, darker](int a, int b)
+	{
+		setInnerColor(darker);
+	});
 
+	SetOnHeldLeave([&,p_innerColor](int a, int b)
+	{
+		setInnerColor(p_innerColor);
+	});
 }
 
 //Creates a Sprite from a specific texture to take the form of a button

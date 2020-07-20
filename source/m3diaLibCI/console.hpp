@@ -8,27 +8,58 @@
 
 namespace m3dCI
 {
+	/**
+		@brief The Console is a custom debugging interface useful for printing out messages during runtime
+	**/
 	class Console : public m3d::Drawable
 	{
 		private:
 			bool toggleState;
 			m3dCI::Text consoleTextBox;
 			m3d::Rectangle consoleBlackRectangle;
+			
 		public:
-			//Default Console constructor. Creates a background with a textbox for console output
+			/**
+				@brief Creates a Console
+				@param defaultText Initial text to display on the Console
+			**/
 			Console(std::string defaultText);
 
-			//Deconstructor: Delete objects which were created solely for this object.
+			/**
+				@brief Deconstructor for Console.
+				Delete objects which were created solely for this object.
+			**/
 			virtual ~Console();
-			//Toggle the state of the console (visible to invisible)
+			
+			/**
+				@brief Toggles the visibility state of the console.
+			**/
 			void ToggleState();
-			//Prints the last 10 lines, any previous lines after are ignored
+			
+			/**
+				@brief Add text to be displayed.
+				Up to 10 lines are displayed at once.
+				@param text Text to add to the Console
+			**/
 			void print(std::string text);
-			//Prints a piece of information with a new line preceding it
+			
+			/**
+				@brief Add text to be displayed followed by a new line.
+				Up to 10 lines are displayed at once.
+				@param text Text to add to the Console
+			**/
 			void println(std::string text);
-			//Determine how to draw the Console
+			
+			/**
+				@brief Draw the Console
+				@param t_context Where on screen the Console should be rendered
+			**/
 			void draw(m3d::RenderContext t_context);
-			//Determine if the console is being drawn
+			
+			/**
+				@brief Determine if the console is being drawn
+				@returns A boolean with the draw state of the Console
+			**/
 			bool isDrawn();
 	};
 } 

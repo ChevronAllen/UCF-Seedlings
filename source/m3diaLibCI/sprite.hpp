@@ -9,7 +9,7 @@
 
 namespace m3dCI {
     /**
-     * @brief A sprite, which can be used to draw textures
+     * @brief A custom implemenation of the Sprite class from m3diaLib. Which can be used to draw textures
      */
     class Sprite: public m3d::Drawable {
     public:
@@ -25,7 +25,7 @@ namespace m3dCI {
          */
         Sprite(const std::string& t_spriteSheet, int t_imageId = 0);
 
-		//Destructor: Objects that must be deleted when this object is deleted. Delete(nullptr) is fail-safe.
+		///Destructor: Objects that must be deleted when this object is deleted. Delete(nullptr) is fail-safe.
 		virtual ~Sprite();
 
         /**
@@ -259,10 +259,23 @@ namespace m3dCI {
          */
         void draw(m3d::RenderContext t_context);
 
+		/**
+			@brief Gets the BoundingBox of the Sprite object
+			@returns BoundingBox with x, y, width, and height loaded from the sprite
+		**/
 		m3d::BoundingBox getBoundingBox();
 
+		/**
+			@brief Creates a Sprite from a specific SpriteSheet given an integer id
+			@param t_sheet SpriteSheet location
+			@param t_index ID of the Sprite inside the SpriteSheet
+			@returns A sprite object with the sprite from the SpriteSheet ID
+		**/
         static Sprite* createFromSheet(C2D_SpriteSheet&,int);
 
+		/**
+			@brief The Citro2D sprite object.
+		**/
 		C2D_Sprite m_sprite;
     private:
         void updateTint();

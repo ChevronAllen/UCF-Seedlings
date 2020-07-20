@@ -1,3 +1,7 @@
+/**
+ *  @file util.hpp
+ *  @brief Defines the Util class
+ */
 #pragma once
 
 #include "m3diaLibCI/console.hpp"
@@ -6,46 +10,101 @@
 
 using namespace m3d;
 
+/**
+ *  @class Util "util.hpp"
+ *  @brief A utility singleton class 
+ *  
+ *  Util is tasked with providing functions needed by several other classes
+*/
 class Util
 {
 	private:
-	
-	//Default console in which all Util.Prints will print ot to
+	///Default console in which all Util.Prints will print ot to
 	m3dCI::Console* console;
 	
-	//The active Applet object
+	///The active Applet object
 	Applet* app;
-	//The active screen object
+	///The active screen object
 	Screen* scr;
 	
-	/*
+	/**
+		@brief
 		This Class is a singleton. 
 		Meaning, only one instance of this class may ever exist.
 		This allows for all classes to access this object through the use of this instance value.
 		An initial instantiation must occur with proper vaules passed into getInstance
 		All further attempts to accesss this class can use dummy values for all parameters of getInstance
-	*/
+	**/
 	static Util *instance;
+	
+	/**
+		@brief Constructor for the Util class
+		@param screen Screen to draw the console to
+		@param applet The current running Game applet
+	**/
 	Util(Screen* screen, Applet* applet);
 	
 	public:
-	//Destructor: Objects that must be deleted when this object is deleted. Delete(nullptr) is fail-safe.
-	virtual ~Util();
+	/**
+		@brief Deconstructor for Util.
+		Responsible for deleting all needed children.
+	**/
+	~Util();
 	
-	//The function which is called on every game frame.
+	/**
+		@brief The function called each game frame to update all pieces needed by the Util class
+	**/
 	void OnUpdate();
 	
+	/**
+		@brief Create the initial instance of the Util class
+		@param screen Screen to draw the console to
+		@param applet The current running Game applet
+	**/
 	static Util* createInstance(Screen* screen, Applet* applet);
+	
+	/**
+		@brief Get the singleton instance of the Util class
+		@returns The singleton instance of the Util class
+	**/
 	static Util* getInstance();
 	
-	//Print statements to write to the primary console.
+	/**
+		@brief Print text to the Console followed by a new line.
+		@param text The text to write to the console
+	**/
 	static void PrintLine(std::string text);
+	
+	/**
+		@brief Print text to the Console.
+		@param text The text to write to the console
+	**/
 	static void Print(std::string text);
 	
+	/**
+		@brief Handles drawing of m3d Objects needed by the Util class
+	**/
     void OnDraw();
+	
+	/**
+		@brief Draw a m3d::Drawable object to the Top screen
+		@param obj Object to draw
+		@param mode RenderContext mode
+		@param layer Vertical layer to draw at
+	**/
 	static void drawTop(Drawable& obj, RenderContext::Mode mode, int layer);
+	
+	/**
+		@brief Draw a m3d::Drawable object to the bottom screen
+		@param obj Object to draw
+		@param mode RenderContext mode
+		@param layer Vertical layer to draw at
+	**/
 	static void drawBottom(Drawable& obj, RenderContext::Mode mode, int layer);
 	
-	//Function to check the current Console drawn state
+	/**
+		@brief Check the Console drawn status
+		@returns The drawing status of the Console
+	**/
 	static bool IsConsoleDrawn();
 };

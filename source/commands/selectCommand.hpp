@@ -19,7 +19,7 @@ public:
 
     std::string convertToLua()
     {
-        return "select_gameobject(\"" + m_params[0] + "\")\n"; 
+        return "select_object(\"" + m_params[0] + "\")\n";
     }
 
 };
