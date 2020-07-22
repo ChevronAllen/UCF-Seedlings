@@ -1,11 +1,13 @@
 #pragma once
 #include <stdio.h>
 #include <stdlib.h>
+#include <sstream>
 #include <iostream>
 #include <vector>
 #include <math.h>
 #include <map>
 #include <queue>
+#include <setjmp.h>
 
 
 #include "lua/lua.hpp"
@@ -16,8 +18,8 @@
 #define DEBUG_SANDBOX
 #endif
 
-#define SANDBOX_MEM_CAPACITY 4096 /** Memory capacity of the  sandbox in bytes*/ 
-#define THREAD_STACK (unsigned long long) 4096 /** Memory capacity of the sandbox thread stack in bytes*/
+#define SANDBOX_MEM_CAPACITY 1024 * 500 /** Memory capacity of the  sandbox in bytes*/ 
+#define THREAD_STACK (unsigned long long) 4096  /** Memory capacity of the sandbox thread stack in bytes*/
 
 #define THREAD_CLEAR    3
 #define THREAD_SKIP     2
@@ -71,6 +73,8 @@ private:
      *  @returns new pointer to the start of the target memory block, returns null if no space could be made
      */
     static void * allocator(void *ud, void *ptr, size_t osize, size_t nsize);
+
+    static int panic(lua_State* L);
     
     /** @brief Bind all User API functions to the Lua state 
      * 

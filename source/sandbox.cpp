@@ -38,14 +38,14 @@ void LuaSandbox::initialize(std::function<void()> before = 0, std::function<void
 {
     memSize = 0;
     memCapacity = SANDBOX_MEM_CAPACITY;
-
+    
     if(before != 0)
         m_execBefore = before;
     if(after != 0)
         m_execAfter = after;    
 
     m3d::Lock lock_sandbox(m_mutex_sandbox);
-	m_luaState = lua_newstate(allocator,nullptr);
+	m_luaState = lua_newstate(allocator,this);
     luaopen_base(m_luaState);
     luaopen_table(m_luaState);
     bindAPI();
@@ -156,13 +156,81 @@ void LuaSandbox::sandboxRuntime(m3d::Parameter param)
 
 void* LuaSandbox::allocator(void *ud, void *ptr, size_t osize, size_t nsize)
 {
-    (void)ud;  (void)osize;  /* not used */
+    (void)osize;  /* not used */
+
+    #ifdef DEBUG_SANDBOX
+    stringstream sstr;
+    #endif
+
+    LuaSandbox *ls = static_cast<LuaSandbox*>(ud);
+    if(ls == NULL || ls == nullptr)
+    {
+        Util::PrintLine("Lua Error: couldn't allocate");
+        return NULL;
+    }
+    //lua_gc(ls->m_luaState, LUA_GCCOUNT, 0);
+
+    #ifdef DEBUG_SANDBOX
+    sstr.str("");
+    sstr << "Lua:" << ls << ", size:" << ls->getMemSize() << ", cap:" << ls->getMemCapacity();
+    Util::PrintLine(sstr.str());
+    #endif
+
     if (nsize == 0) {
+        
+        #ifdef DEBUG_SANDBOX
+        sstr.str("");
+        sstr << ptr << ": " << osize << "-->" << nsize;
+        Util::PrintLine(sstr.str());
+        #endif
+
         free(ptr);
+        ls->memSize += nsize - osize;
         return NULL;
     }
     else
+    {
+        if( ls->getMemSize() + (nsize - osize) > ls->getMemCapacity() )
+        {
+            #ifdef DEBUG_SANDBOX
+            sstr.str("");
+            sstr << ptr << ": " << osize << "-->" << 0;
+            Util::PrintLine(sstr.str());
+            #endif
+
+        }else
+        {
+            #ifdef DEBUG_SANDBOX
+            sstr.str("");
+            sstr << ptr << ": " << osize << "-->" << nsize;
+            Util::PrintLine(sstr.str());
+            #endif
+        }
+        ls->memSize += nsize - osize;
         return realloc(ptr, nsize);
+    }
+}
+
+int LuaSandbox::panic(lua_State* L)
+{
+    if(lua_gettop(L) > 1)
+    {
+        std::string errorString = lua_tostring(L,-1);
+        Util::PrintLine(errorString);
+        std::cerr << errorString;
+        
+    }
+    longjmp(L->errorJmp->b, 1);
+}
+
+unsigned long int LuaSandbox::getMemSize()
+{
+    return memSize;
+}
+
+unsigned long int LuaSandbox::getMemCapacity()
+{
+    return memCapacity;
 }
 
 bool LuaSandbox::executeString(std::string text)

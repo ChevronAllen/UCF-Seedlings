@@ -218,7 +218,7 @@ void MazeScene::update()
 			break;
 	}
 
-	Util::PrintLine(std::to_string(currentState));
+	//Util::PrintLine(std::to_string(currentState));
 };
 
 void MazeScene::SubmitMazeCode(std::vector<CommandObject*> luaCode)
