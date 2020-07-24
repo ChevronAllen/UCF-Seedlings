@@ -1,27 +1,27 @@
 /*
 ** $Id: ltm.c,v 2.38.1.1 2017/04/19 17:39:34 roberto Exp $
 ** Tag methods
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 #define ltm_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 
 #include <string.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "ldebug.h"
-#include "ldo.h"
-#include "lobject.h"
-#include "lstate.h"
-#include "lstring.h"
-#include "ltable.h"
-#include "ltm.h"
-#include "lvm.h"
+#include "lua/ldebug.h"
+#include "lua/ldo.h"
+#include "lua/lobject.h"
+#include "lua/lstate.h"
+#include "lua/lstring.h"
+#include "lua/ltable.h"
+#include "lua/ltm.h"
+#include "lua/lvm.h"
 
 
 static const char udatatypename[] = "userdata";

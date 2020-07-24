@@ -1,6 +1,6 @@
-#include "CommandEditorMenuItem.hpp"
+#include "menu/menuItems/CommandEditorMenuItem.hpp"
 
-#include "../../commands/commands.h"
+
 
 CommandEditorMenuItem::CommandEditorMenuItem(CommandObject* command)
 	: CommandEditor(command), MenuItem()

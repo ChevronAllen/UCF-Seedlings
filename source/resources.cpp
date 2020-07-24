@@ -1,4 +1,4 @@
-#include "resources.h"
+#include "resourceManager.hpp"
 #define ERROR_SPRITE _hashmap["error.png"]
 
 //ResourceManager* ResourceManager::_instance = NULL;

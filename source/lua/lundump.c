@@ -1,27 +1,27 @@
 /*
 ** $Id: lundump.c,v 2.44.1.1 2017/04/19 17:20:42 roberto Exp $
 ** load precompiled Lua chunks
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 #define lundump_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 
 #include <string.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "ldebug.h"
-#include "ldo.h"
-#include "lfunc.h"
-#include "lmem.h"
-#include "lobject.h"
-#include "lstring.h"
-#include "lundump.h"
-#include "lzio.h"
+#include "lua/ldebug.h"
+#include "lua/ldo.h"
+#include "lua/lfunc.h"
+#include "lua/lmem.h"
+#include "lua/lobject.h"
+#include "lua/lstring.h"
+#include "lua/lundump.h"
+#include "lua/lzio.h"
 
 
 #if !defined(luai_verifycode)

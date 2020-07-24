@@ -2,7 +2,7 @@
  *  @file objectAPI.cpp
  *  @brief Implementations for @ref GameObject related @ref UserAPI functions
  */
-#include "../userAPI.hpp"
+#include "userAPI/userAPI.hpp"
 
 
 int UserAPI::move_object(lua_State* L)

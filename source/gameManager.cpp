@@ -1,9 +1,9 @@
 #pragma once
 #include <math.h>
 
-//#include "core.h"
-#include "gameManager.hpp"
-#include "util.hpp"
+#include "core.h"
+//#include "gameManager.hpp"
+//#include "util.hpp"
 
 m3d::BoundingBox* GameManager::ScreenBoundsTop = NULL;
 m3d::BoundingBox* GameManager::ScreenBoundsBottom = NULL;

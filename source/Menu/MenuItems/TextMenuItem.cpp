@@ -1,4 +1,4 @@
-#include "TextMenuItem.hpp"
+#include "menu/menuItems/TextMenuItem.hpp"
 
 TextMenuItem::TextMenuItem(std::string str, m3d::Color color) : m3dCI::Text(str, color), MenuItem()
 {

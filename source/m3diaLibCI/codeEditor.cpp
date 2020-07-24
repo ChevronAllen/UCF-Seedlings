@@ -1,6 +1,4 @@
-#include "codeEditor.hpp"
-
-#include "../commands/commands.h"
+#include "m3diaLibCI/codeEditor.hpp"
 
 #define TOPSCREEN_WIDTH 400
 #define BOTTOMSCREEN_WIDTH 320

@@ -1,25 +1,25 @@
 /*
 ** $Id: lstring.c,v 2.56.1.1 2017/04/19 17:20:42 roberto Exp $
 ** String table (keeps all strings handled by Lua)
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 #define lstring_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 
 #include <string.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "ldebug.h"
-#include "ldo.h"
-#include "lmem.h"
-#include "lobject.h"
-#include "lstate.h"
-#include "lstring.h"
+#include "lua/ldebug.h"
+#include "lua/ldo.h"
+#include "lua/lmem.h"
+#include "lua/lobject.h"
+#include "lua/lstate.h"
+#include "lua/lstring.h"
 
 
 #define MEMERRMSG       "not enough memory"

@@ -1,7 +1,7 @@
 /*
 ** $Id: linit.c,v 1.39.1.1 2017/04/19 17:20:42 roberto Exp $
 ** Initialization of libraries for lua.c and other clients
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 
@@ -24,15 +24,15 @@
 **  lua_pop(L, 1);  // remove PRELOAD table
 */
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 
 #include <stddef.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "lualib.h"
-#include "lauxlib.h"
+#include "lua/lualib.h"
+#include "lua/lauxlib.h"
 
 
 /*

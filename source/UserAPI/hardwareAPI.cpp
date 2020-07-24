@@ -3,6 +3,6 @@
  *  @brief Implementations for hardware & peripheral related @ref UserAPI functions
  */
 
-#include "../userAPI.hpp"
+#include "userAPI/userAPI.hpp"
 
 

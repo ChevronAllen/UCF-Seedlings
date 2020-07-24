@@ -1,4 +1,4 @@
-#include "CodeEditorMenuItem.hpp"
+#include "menu/menuItems/CodeEditorMenuItem.hpp"
 
 #define TOPSCREEN_WIDTH 400
 #define BOTTOMSCREEN_WIDTH 320

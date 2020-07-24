@@ -1,31 +1,31 @@
 /*
 ** $Id: llex.c,v 2.96.1.1 2017/04/19 17:20:42 roberto Exp $
 ** Lexical Analyzer
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 #define llex_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 
 #include <locale.h>
 #include <string.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "lctype.h"
-#include "ldebug.h"
-#include "ldo.h"
-#include "lgc.h"
-#include "llex.h"
-#include "lobject.h"
-#include "lparser.h"
-#include "lstate.h"
-#include "lstring.h"
-#include "ltable.h"
-#include "lzio.h"
+#include "lua/lctype.h"
+#include "lua/ldebug.h"
+#include "lua/ldo.h"
+#include "lua/lgc.h"
+#include "lua/llex.h"
+#include "lua/lobject.h"
+#include "lua/lparser.h"
+#include "lua/lstate.h"
+#include "lua/lstring.h"
+#include "lua/ltable.h"
+#include "lua/lzio.h"
 
 
 

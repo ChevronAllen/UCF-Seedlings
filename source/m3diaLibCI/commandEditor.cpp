@@ -1,7 +1,5 @@
 #include "commandEditor.hpp"
 
-#include "../commands/commands.h"
-
 #define X_NAME_SHIFT 10
 #define Y_NAME_SHIFT 19
 

@@ -1,33 +1,33 @@
 /*
 ** $Id: ldebug.c,v 2.121.1.2 2017/07/10 17:21:50 roberto Exp $
 ** Debug Interface
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 #define ldebug_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 
 #include <stdarg.h>
 #include <stddef.h>
 #include <string.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "lapi.h"
-#include "lcode.h"
-#include "ldebug.h"
-#include "ldo.h"
-#include "lfunc.h"
-#include "lobject.h"
-#include "lopcodes.h"
-#include "lstate.h"
-#include "lstring.h"
-#include "ltable.h"
-#include "ltm.h"
-#include "lvm.h"
+#include "lua/lapi.h"
+#include "lua/lcode.h"
+#include "lua/ldebug.h"
+#include "lua/ldo.h"
+#include "lua/lfunc.h"
+#include "lua/lobject.h"
+#include "lua/lopcodes.h"
+#include "lua/lstate.h"
+#include "lua/lstring.h"
+#include "lua/ltable.h"
+#include "lua/ltm.h"
+#include "lua/lvm.h"
 
 
 

@@ -1,4 +1,4 @@
-#include "minigame.hpp"
+#include "scenes/minigame.hpp"
 
 
 void Minigame::toggleWinCond()

@@ -1,4 +1,4 @@
-#include "CommandListerMenuItem.hpp"
+#include "menu/menuItems/CommandListerMenuItem.hpp"
 
 CommandListerMenuItem::CommandListerMenuItem(Minigame* minigame)
 	: CommandLister(minigame), MenuItem()

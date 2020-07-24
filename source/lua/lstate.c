@@ -1,31 +1,31 @@
 /*
 ** $Id: lstate.c,v 2.133.1.1 2017/04/19 17:39:34 roberto Exp $
 ** Global State
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 #define lstate_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 
 #include <stddef.h>
 #include <string.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "lapi.h"
-#include "ldebug.h"
-#include "ldo.h"
-#include "lfunc.h"
-#include "lgc.h"
-#include "llex.h"
-#include "lmem.h"
-#include "lstate.h"
-#include "lstring.h"
-#include "ltable.h"
-#include "ltm.h"
+#include "lua/lapi.h"
+#include "lua/ldebug.h"
+#include "lua/ldo.h"
+#include "lua/lfunc.h"
+#include "lua/lgc.h"
+#include "lua/llex.h"
+#include "lua/lmem.h"
+#include "lua/lstate.h"
+#include "lua/lstring.h"
+#include "lua/ltable.h"
+#include "lua/ltm.h"
 
 
 #if !defined(LUAI_GCPAUSE)

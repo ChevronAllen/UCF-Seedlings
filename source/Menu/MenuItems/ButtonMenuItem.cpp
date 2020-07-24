@@ -1,6 +1,5 @@
-#include "ButtonMenuItem.hpp"
+#include "menu/menuItems/ButtonMenuItem.hpp"
 
-#include "../../util.hpp"
 
 //Creates a Rectangle to take the form of a button
 ButtonMenuItem::ButtonMenuItem(int px, int py, int pw, int ph, m3d::Color p_innerColor, m3d::Color p_borderColor, int p_borderWidth = 3)

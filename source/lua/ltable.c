@@ -1,13 +1,13 @@
 /*
 ** $Id: ltable.c,v 2.118.1.4 2018/06/08 16:22:51 roberto Exp $
 ** Lua tables (hash)
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 #define ltable_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 
 /*
@@ -26,17 +26,17 @@
 #include <math.h>
 #include <limits.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "ldebug.h"
-#include "ldo.h"
-#include "lgc.h"
-#include "lmem.h"
-#include "lobject.h"
-#include "lstate.h"
-#include "lstring.h"
-#include "ltable.h"
-#include "lvm.h"
+#include "lua/ldebug.h"
+#include "lua/ldo.h"
+#include "lua/lgc.h"
+#include "lua/lmem.h"
+#include "lua/lobject.h"
+#include "lua/lstate.h"
+#include "lua/lstring.h"
+#include "lua/ltable.h"
+#include "lua/lvm.h"
 
 
 /*

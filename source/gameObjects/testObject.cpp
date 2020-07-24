@@ -1,6 +1,6 @@
-#include "../gameObjects/gameObject.hpp"
-#include "../gameManager.hpp"
-#include "../resources.h"
+#include "gameManager.hpp"
+#include "resourceManager.hpp"
+#include "gameObjects/gameObject.hpp"
 
 class TestObject : public GameObject
 {

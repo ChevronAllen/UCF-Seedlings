@@ -1,37 +1,37 @@
 /*
 ** $Id: ldo.c,v 2.157.1.1 2017/04/19 17:20:42 roberto Exp $
 ** Stack and Call structure of Lua
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 #define ldo_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 
 #include <setjmp.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "lapi.h"
-#include "ldebug.h"
-#include "ldo.h"
-#include "lfunc.h"
-#include "lgc.h"
-#include "lmem.h"
-#include "lobject.h"
-#include "lopcodes.h"
-#include "lparser.h"
-#include "lstate.h"
-#include "lstring.h"
-#include "ltable.h"
-#include "ltm.h"
-#include "lundump.h"
-#include "lvm.h"
-#include "lzio.h"
+#include "lua/lapi.h"
+#include "lua/ldebug.h"
+#include "lua/ldo.h"
+#include "lua/lfunc.h"
+#include "lua/lgc.h"
+#include "lua/lmem.h"
+#include "lua/lobject.h"
+#include "lua/lopcodes.h"
+#include "lua/lparser.h"
+#include "lua/lstate.h"
+#include "lua/lstring.h"
+#include "lua/ltable.h"
+#include "lua/ltm.h"
+#include "lua/lundump.h"
+#include "lua/lvm.h"
+#include "lua/lzio.h"
 
 
 

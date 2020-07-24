@@ -1,13 +1,13 @@
 /*
 ** $Id: lobject.c,v 2.113.1.1 2017/04/19 17:29:57 roberto Exp $
 ** Some generic functions over Lua objects
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 #define lobject_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 
 #include <locale.h>
@@ -17,16 +17,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "lctype.h"
-#include "ldebug.h"
-#include "ldo.h"
-#include "lmem.h"
-#include "lobject.h"
-#include "lstate.h"
-#include "lstring.h"
-#include "lvm.h"
+#include "lua/lctype.h"
+#include "lua/ldebug.h"
+#include "lua/ldo.h"
+#include "lua/lmem.h"
+#include "lua/lobject.h"
+#include "lua/lstate.h"
+#include "lua/lstring.h"
+#include "lua/lvm.h"
 
 
 

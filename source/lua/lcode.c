@@ -1,32 +1,32 @@
 /*
 ** $Id: lcode.c,v 2.112.1.1 2017/04/19 17:20:42 roberto Exp $
 ** Code generator for Lua
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 #define lcode_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 
 #include <math.h>
 #include <stdlib.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "lcode.h"
-#include "ldebug.h"
-#include "ldo.h"
-#include "lgc.h"
-#include "llex.h"
-#include "lmem.h"
-#include "lobject.h"
-#include "lopcodes.h"
-#include "lparser.h"
-#include "lstring.h"
-#include "ltable.h"
-#include "lvm.h"
+#include "lua/lcode.h"
+#include "lua/ldebug.h"
+#include "lua/ldo.h"
+#include "lua/lgc.h"
+#include "lua/llex.h"
+#include "lua/lmem.h"
+#include "lua/lobject.h"
+#include "lua/lopcodes.h"
+#include "lua/lparser.h"
+#include "lua/lstring.h"
+#include "lua/ltable.h"
+#include "lua/lvm.h"
 
 
 /* Maximum number of registers in a Lua function (must fit in 8 bits) */

@@ -13,7 +13,7 @@
 
 #include "util.hpp"
 #include "sandbox.hpp"
-#include "resources.h"
+#include "resourceManager.hpp"
 #include "gameManager.hpp"
 #include "sceneManager.hpp"
 #include "inputManager.hpp"

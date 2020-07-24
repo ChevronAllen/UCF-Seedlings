@@ -1,5 +1,5 @@
-#include "TicTacToeScene.hpp"
-#include "MinigameSelectScene.hpp"
+#include "scenes/TicTacToeScene.hpp"
+#include "scenes/MinigameSelectScene.hpp"
 
 #define t(x) AddCommand(x)
 #define func(a) [&]() { t(a); }

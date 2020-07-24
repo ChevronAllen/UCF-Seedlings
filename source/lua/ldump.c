@@ -1,22 +1,22 @@
 /*
 ** $Id: ldump.c,v 2.37.1.1 2017/04/19 17:20:42 roberto Exp $
 ** save precompiled Lua chunks
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 #define ldump_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 
 #include <stddef.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "lobject.h"
-#include "lstate.h"
-#include "lundump.h"
+#include "lua/lobject.h"
+#include "lua/lstate.h"
+#include "lua/lundump.h"
 
 
 typedef struct {

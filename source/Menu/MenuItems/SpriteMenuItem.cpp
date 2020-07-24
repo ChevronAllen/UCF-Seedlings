@@ -1,4 +1,4 @@
-#include "SpriteMenuItem.hpp"
+#include "menu/menuItems/SpriteMenuItem.hpp"
 
 SpriteMenuItem::SpriteMenuItem() : m3dCI::Sprite(), MenuItem()
 {

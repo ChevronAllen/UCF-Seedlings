@@ -1,25 +1,25 @@
 /*
 ** $Id: lmem.c,v 1.91.1.1 2017/04/19 17:20:42 roberto Exp $
 ** Interface to Memory Manager
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 #define lmem_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 
 #include <stddef.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "ldebug.h"
-#include "ldo.h"
-#include "lgc.h"
-#include "lmem.h"
-#include "lobject.h"
-#include "lstate.h"
+#include "lua/ldebug.h"
+#include "lua/ldo.h"
+#include "lua/lgc.h"
+#include "lua/lmem.h"
+#include "lua/lobject.h"
+#include "lua/lstate.h"
 
 
 

@@ -1,5 +1,5 @@
-#include "MazeScene.hpp"
-#include "MinigameSelectScene.hpp"
+#include "scenes/MazeScene.hpp"
+#include "scenes/MinigameSelectScene.hpp"
 
 MazeScene::MazeScene()
 {

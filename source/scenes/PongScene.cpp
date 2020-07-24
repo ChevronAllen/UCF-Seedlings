@@ -1,7 +1,7 @@
-#include "PongScene.hpp"
-#include "MinigameSelectScene.hpp"
+#include "sandbox.hpp"
+#include "scenes/PongScene.hpp"
+#include "scenes/MinigameSelectScene.hpp"
 
-#include "../sandbox.hpp"
 
 #define t(x) AddCommand(x)
 #define func(a) [&]() { t(a); }

@@ -1,6 +1,5 @@
-#include "MinigameSelectScene.hpp"
-
-#include "MainMenuScene.hpp"
+#include "scenes/MinigameSelectScene.hpp"
+#include "scenes/MainMenuScene.hpp"
 
 MinigameSelectScene::MinigameSelectScene()
 {

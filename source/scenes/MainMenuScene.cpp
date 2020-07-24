@@ -1,6 +1,9 @@
-#include "MainMenuScene.hpp"
-
-#include "MinigameSelectScene.hpp"
+/**
+ *  @file MainMenuScene.hpp
+ *  @brief Defines the MainMenuScene
+ */
+#include "scenes/MainMenuScene.hpp"
+#include "scenes/MinigameSelectScene.hpp"
 
 MainMenuScene::MainMenuScene()
 {

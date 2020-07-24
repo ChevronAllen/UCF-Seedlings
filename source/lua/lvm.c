@@ -1,13 +1,13 @@
 /*
 ** $Id: lvm.c,v 2.268.1.1 2017/04/19 17:39:34 roberto Exp $
 ** Lua virtual machine
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 #define lvm_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 #include <float.h>
 #include <limits.h>
@@ -16,19 +16,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "ldebug.h"
-#include "ldo.h"
-#include "lfunc.h"
-#include "lgc.h"
-#include "lobject.h"
-#include "lopcodes.h"
-#include "lstate.h"
-#include "lstring.h"
-#include "ltable.h"
-#include "ltm.h"
-#include "lvm.h"
+#include "lua/ldebug.h"
+#include "lua/ldo.h"
+#include "lua/lfunc.h"
+#include "lua/lgc.h"
+#include "lua/lobject.h"
+#include "lua/lopcodes.h"
+#include "lua/lstate.h"
+#include "lua/lstring.h"
+#include "lua/ltable.h"
+#include "lua/ltm.h"
+#include "lua/lvm.h"
 
 
 /* limit for table tag-method chains (to avoid loops) */

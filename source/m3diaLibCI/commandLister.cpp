@@ -1,6 +1,6 @@
-#include "commandLister.hpp"
-#include "../scenes/minigame.hpp"
-#include "../commands/commands.h"
+#include "commands/commands.h"
+#include "scenes/minigame.hpp"
+#include "m3diaLibCI/commandLister.hpp"
 
 #define t(x) minigame->AddCommand(x)
 #define func(a) [&]() { t(a); }

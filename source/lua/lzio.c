@@ -1,23 +1,23 @@
 /*
 ** $Id: lzio.c,v 1.37.1.1 2017/04/19 17:20:42 roberto Exp $
 ** Buffered streams
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 #define lzio_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 
 #include <string.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "llimits.h"
-#include "lmem.h"
-#include "lstate.h"
-#include "lzio.h"
+#include "lua/llimits.h"
+#include "lua/lmem.h"
+#include "lua/lstate.h"
+#include "lua/lzio.h"
 
 
 int luaZ_fill (ZIO *z) {

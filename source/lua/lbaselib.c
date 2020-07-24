@@ -1,13 +1,13 @@
 /*
 ** $Id: lbaselib.c,v 1.314.1.1 2017/04/19 17:39:34 roberto Exp $
 ** Basic library
-** See Copyright Notice in lua.h
+** See Copyright Notice in lua/lua.h
 */
 
 #define lbaselib_c
 #define LUA_LIB
 
-#include "lprefix.h"
+#include "lua/lprefix.h"
 
 
 #include <ctype.h>
@@ -15,10 +15,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "lua.h"
+#include "lua/lua.h"
 
-#include "lauxlib.h"
-#include "lualib.h"
+#include "lua/lauxlib.h"
+#include "lua/lualib.h"
 
 
 static int luaB_print (lua_State *L) {
