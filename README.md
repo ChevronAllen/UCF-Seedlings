@@ -12,7 +12,7 @@ Created using devKitPro and m3diaLib libraries.
 - Chevron Allen (Project Manager, Lua Sandbox, User API, Game Engine)
 - Kenneth Rosario (Tic-Tac-Toe Game Programming)
 - Glenn Ruperto (Maze Game Programming)
-- Bryce Vichi (GUI, Game Engine)
+- Bryce Vichi (GUI, Command Menu, Game Engine)
 
 **Sponsored by** Professor Paul Gazzillo
 
